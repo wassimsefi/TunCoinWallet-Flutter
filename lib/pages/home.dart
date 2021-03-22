@@ -1,7 +1,10 @@
+import 'package:TunCoinWallet/pages/accueil.dart';
 import 'package:TunCoinWallet/pages/send.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
 import 'package:TunCoinWallet/pages/statistical%20.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'buy.dart';
 import 'notification.dart';
@@ -12,6 +15,29 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  String id = "";
+
+  Future getId() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id');
+    print("home : " + id);
+  }
+
+  Future logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Accueilpage()));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getId();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -113,6 +139,7 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ),
                       onTap: () {
+                        print("object : " + id);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => SendPage()));
                       },
@@ -215,8 +242,7 @@ class _HomepageState extends State<Homepage> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => SignupPage()));
+                        logOut();
                       },
                     ),
                   ],

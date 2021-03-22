@@ -3,12 +3,22 @@ import 'package:TunCoinWallet/pages/home.dart';
 import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var id = prefs.getString('id');
+  print("login iddd : " + id);
+  runApp(MaterialApp(home: id == "" ? LoginPage() : Menu()));
+}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -213,6 +223,10 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                   print("login id " + _user.user.id);
                                   print("user : " + userModelToJson(_user));
+
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  prefs.setString('id', _user.user.id);
 
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(

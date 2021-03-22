@@ -1,6 +1,7 @@
 import 'package:TunCoinWallet/pages/login.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'menu.dart';
 
@@ -10,6 +11,22 @@ class Accueilpage extends StatefulWidget {
 }
 
 class _AccueilpageState extends State<Accueilpage> {
+  String id = "";
+
+  Future getId() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id');
+    // print("acceuil : " + id);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getId();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +82,8 @@ class _AccueilpageState extends State<Accueilpage> {
                           borderRadius: BorderRadius.circular(30.0)),
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => LoginPage()));
+                            builder: (context) =>
+                                id == null ? LoginPage() : Menu()));
 
                         // } else {
 
