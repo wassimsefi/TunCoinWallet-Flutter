@@ -1,10 +1,8 @@
-import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/home.dart';
 import 'package:TunCoinWallet/pages/login.dart';
 import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import 'dart:async';
 
@@ -15,24 +13,11 @@ class SignupPage extends StatefulWidget {
   _SignupPageState createState() => _SignupPageState();
 }
 
-Future<UserModel> createUser(String email, String password) async {
-  final String apiUrl = "http://192.168.1.5:3000/signup";
-  final Response =
-      await http.post(apiUrl, body: {"email": email, "password": password});
-
-  if (Response.statusCode == 200) {
-    final String responseString = Response.body;
-    return userModelFromJson(responseString);
-  } else {
-    return null;
-  }
-}
-
 class _SignupPageState extends State<SignupPage> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool hidePassword = true;
   bool hidePassword2 = true;
-  UserModel _user;
+
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmpas = TextEditingController();
@@ -253,29 +238,14 @@ class _SignupPageState extends State<SignupPage> {
                               color: Colors.transparent,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0)),
-                              onPressed: () async {
-                                print("hello ");
-
-                                final String email = _email.text;
-                                final String password = _password.text;
-                                print("hello 2");
-                                final UserModel user =
-                                    await createUser(email, password);
-                                print("sign up " + email + " " + password);
-                                print("sign up ");
-
-                                setState(() {
-                                  _user = user;
-                                });
-
-                                /*    if (_formkey.currentState.validate()) {
-                                   Navigator.of(context).pushReplacement(
+                              onPressed: () {
+                                if (_formkey.currentState.validate()) {
+                                  Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                           builder: (context) => LoginPage()));
                                 } else {
                                   return;
                                 }
-                                */
                               },
                             ),
                           ),
