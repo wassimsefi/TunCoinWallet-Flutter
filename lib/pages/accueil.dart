@@ -11,22 +11,6 @@ class Accueilpage extends StatefulWidget {
 }
 
 class _AccueilpageState extends State<Accueilpage> {
-  String id = "";
-
-  Future getId() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    id = prefs.getString('id');
-    // print("acceuil : " + id);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getId();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,8 +66,7 @@ class _AccueilpageState extends State<Accueilpage> {
                           borderRadius: BorderRadius.circular(30.0)),
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) =>
-                                id == null ? LoginPage() : Menu()));
+                            builder: (context) => LoginPage()));
 
                         // } else {
 

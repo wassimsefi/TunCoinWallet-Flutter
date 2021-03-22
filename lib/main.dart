@@ -1,6 +1,9 @@
 import 'package:TunCoinWallet/pages/accueil.dart';
+import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,10 +34,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  String id = "";
+
+  Future getId() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id');
+    // print("acceuil : " + id);
+  }
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     loadData();
+    getId();
   }
 
   Future<Timer> loadData() async {
@@ -42,8 +56,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   onDoneLoading() async {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => Accueilpage()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => id == null ? Accueilpage() : Menu()));
   }
 
   @override

@@ -188,7 +188,7 @@ class _HomepageState extends State<Homepage> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(18))),
                               child: Icon(
-                                Icons.attach_money,
+                                Icons.stacked_bar_chart,
                                 color: Colors.blue[900],
                                 size: 30,
                               ),
@@ -198,7 +198,7 @@ class _HomepageState extends State<Homepage> {
                               height: 4,
                             ),
                             Text(
-                              "Loan",
+                              "Statistical",
                               style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
@@ -222,7 +222,7 @@ class _HomepageState extends State<Homepage> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(18))),
                               child: Icon(
-                                Icons.trending_down,
+                                Icons.logout,
                                 color: Colors.blue[900],
                                 size: 30,
                               ),
@@ -232,7 +232,7 @@ class _HomepageState extends State<Homepage> {
                               height: 4,
                             ),
                             Text(
-                              "statistical",
+                              "LogOut",
                               style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
