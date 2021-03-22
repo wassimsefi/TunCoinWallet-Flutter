@@ -1,8 +1,10 @@
+import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/home.dart';
 import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'dart:async';
 
@@ -16,6 +18,38 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool hidePassword = true;
+  UserModel _user;
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+
+  Future<UserModel> loginUser(String email, String password) async {
+    final String apiUrl = "http://192.168.1.5:3000/login";
+    final Response =
+        await http.post(apiUrl, body: {"email": email, "password": password});
+
+    if (Response.statusCode == 200) {
+      final String responseString = Response.body;
+      return userModelFromJson(responseString);
+    } else if (Response.statusCode == 401) {
+      throw Exception(showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Log In Error'),
+          content: Text(
+            'Account not found please try again',
+            style: TextStyle(fontSize: 20.0, color: Colors.red),
+          ),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: Text('OK'))
+          ],
+        ),
+      ));
+
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Padding(
                                   padding: EdgeInsets.all(20.0),
                                   child: TextFormField(
+                                    controller: _email,
                                     decoration: InputDecoration(
                                       hintText: 'Email',
                                       border: OutlineInputBorder(
@@ -88,11 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                                       if (value.isEmpty) {
                                         return "Please entre email ";
                                       }
-                                      if (!RegExp(
-                                              "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
-                                          .hasMatch(value)) {
-                                        return "email invalide ";
-                                      }
+
                                       return null;
                                     },
                                   ),
@@ -100,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Padding(
                                   padding: EdgeInsets.all(20.0),
                                   child: TextFormField(
+                                    controller: _password,
                                     decoration: InputDecoration(
                                       hintText: 'Password',
                                       border: OutlineInputBorder(
@@ -127,9 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                                       if (value.isEmpty) {
                                         return "Please entre Password ";
                                       }
-                                      if (!RegExp("[a-z]{8}").hasMatch(value)) {
-                                        return "password invalide (8 caractères) ";
-                                      }
+
                                       return null;
                                     },
                                   ),
@@ -167,8 +197,23 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.transparent,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0)),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formkey.currentState.validate()) {
+                                  print("hello ");
+
+                                  final String email = _email.text;
+                                  final String password = _password.text;
+                                  print("hello 2");
+                                  final UserModel user =
+                                      await loginUser(email, password);
+                                  print("login " + email + " " + password);
+
+                                  setState(() {
+                                    _user = user;
+                                  });
+                                  print("login id " + _user.user.id);
+                                  print("user : " + userModelToJson(_user));
+
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                           builder: (context) => Menu()));
