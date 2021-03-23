@@ -25,14 +25,14 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _confirmpas = TextEditingController();
 
   Future<UserModel> createUser(String email, String password) async {
-    final String apiUrl = "http://192.168.1.5:3000/signup";
+    final String apiUrl = "http://tuncoin.herokuapp.com/signup";
     final Response =
         await http.post(apiUrl, body: {"email": email, "password": password});
 
-    if (Response.statusCode == 201) {
+    if (Response.statusCode == 200) {
       final String responseString = Response.body;
       return userModelFromJson(responseString);
-    } else if (Response.statusCode == 201) {
+    } else if (Response.statusCode == 401) {
       throw Exception(showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -277,7 +277,6 @@ class _SignupPageState extends State<SignupPage> {
                                   final String password = _password.text;
                                   final UserModel user =
                                       await createUser(email, password);
-                                  print("sign up " + email + " " + password);
 
                                   setState(() {
                                     _user = user;

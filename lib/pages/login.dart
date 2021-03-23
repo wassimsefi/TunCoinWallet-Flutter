@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _password = TextEditingController();
 
   Future<UserModel> loginUser(String email, String password) async {
-    final String apiUrl = "http://192.168.1.5:3000/login";
+    final String apiUrl = "https://tuncoin.herokuapp.com/login";
     final Response =
         await http.post(apiUrl, body: {"email": email, "password": password});
 
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Log In Error'),
           content: Text(
-            'Account not found please try again',
+            'Account is not activated! ou not found! ',
             style: TextStyle(fontSize: 20.0, color: Colors.red),
           ),
           actions: <Widget>[

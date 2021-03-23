@@ -1,9 +1,12 @@
+import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/accueil.dart';
 import 'package:TunCoinWallet/pages/send.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
 import 'package:TunCoinWallet/pages/statistical%20.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'buy.dart';
@@ -16,12 +19,19 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   String id = "";
+  User _user;
 
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id');
     print("home : " + id);
+
+    //get User
+    final User user = await getUser(id);
+    setState(() {
+      _user = user;
+    });
   }
 
   Future logOut() async {
@@ -29,6 +39,16 @@ class _HomepageState extends State<Homepage> {
     prefs.remove('id');
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => Accueilpage()));
+  }
+
+  Future<User> getUser(String id) async {
+    final String apiUrl = "https://tuncoin.herokuapp.com/loggedUser/$id";
+
+    final Response = await http.get(apiUrl);
+
+    final String responseString = Response.body;
+
+    return userFromJson(responseString);
   }
 
   @override
@@ -55,7 +75,7 @@ class _HomepageState extends State<Homepage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "\$2589.900",
+                      _user.balance.toString() + " TNC",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 36,
@@ -138,8 +158,13 @@ class _HomepageState extends State<Homepage> {
                           ],
                         ),
                       ),
-                      onTap: () {
+                      onTap: () async {
                         print("object : " + id);
+                        print("home mail " + _user.email);
+                        print("balance mail " + _user.balance.toString());
+
+                        print("user : " + userToJson(_user));
+
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => SendPage()));
                       },

@@ -5,8 +5,10 @@
 import 'dart:convert';
 
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
-
 String userModelToJson(UserModel data) => json.encode(data.toJson());
+
+User userFromJson(String str) => User.fromJson(json.decode(str));
+String userToJson(User data) => json.encode(data.toJson());
 
 class UserModel {
   UserModel({
@@ -31,7 +33,7 @@ class User {
     this.email,
     this.password,
     this.balance,
-    this.v,
+    this.isConfimed,
   });
 
   List<Transaction> transaction;
@@ -39,7 +41,7 @@ class User {
   String email;
   String password;
   int balance;
-  int v;
+  bool isConfimed;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         transaction: List<Transaction>.from(
@@ -48,7 +50,7 @@ class User {
         email: json["email"],
         password: json["password"],
         balance: json["balance"],
-        v: json["__v"],
+        isConfimed: json["isConfimed"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,33 +59,33 @@ class User {
         "email": email,
         "password": password,
         "balance": balance,
-        "__v": v,
+        "isConfimed": isConfimed,
       };
 }
 
 class Transaction {
   Transaction({
     this.date,
-    this.type,
+    this.typeTransaction,
     this.secondUser,
     this.amount,
   });
 
-  String date;
-  String type;
+  DateTime date;
+  String typeTransaction;
   String secondUser;
-  String amount;
+  int amount;
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        date: json["date"],
-        type: json["type"],
+        date: DateTime.parse(json["date"]),
+        typeTransaction: json["typeTransaction"],
         secondUser: json["secondUser"],
         amount: json["amount"],
       );
 
   Map<String, dynamic> toJson() => {
-        "date": date,
-        "type": type,
+        "date": date.toIso8601String(),
+        "typeTransaction": typeTransaction,
         "secondUser": secondUser,
         "amount": amount,
       };
