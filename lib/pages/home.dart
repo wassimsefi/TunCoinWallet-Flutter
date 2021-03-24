@@ -28,6 +28,7 @@ class _HomepageState extends State<Homepage> {
     print("home : " + id);
 
     //get User
+
     final User user = await getUser(id);
     setState(() {
       _user = user;
@@ -161,9 +162,14 @@ class _HomepageState extends State<Homepage> {
                       onTap: () async {
                         print("object : " + id);
                         print("home mail " + _user.email);
+
+                        print("length transaction  " +
+                            _user.transaction.length.toString());
+
                         print("balance mail " + _user.balance.toString());
 
                         print("user : " + userToJson(_user));
+                        //  final Transaction _transaction =  userToJson(_user)[]
 
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => SendPage()));
@@ -438,9 +444,28 @@ class _HomepageState extends State<Homepage> {
                       ),
 
                       ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _user.transaction.length,
+                        padding: EdgeInsets.all(0),
+                        controller: ScrollController(keepScrollOffset: false),
                         itemBuilder: (context, index) {
+                          // if (_user.transaction.length == 0) {
+                          //   print("nullll !!!!!!!!!");
+                          //   return Center(
+                          //     child: Text(
+                          //       "Null !!!!!!",
+                          //       style: TextStyle(
+                          //           fontSize: 15,
+                          //           fontWeight: FontWeight.w700,
+                          //           color: Colors.grey[500]),
+                          //     ),
+                          //   );
+                          // }
+                          Transaction _transaction = _user.transaction[index];
+
                           return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 32),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 32, vertical: 10),
                             padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -468,7 +493,7 @@ class _HomepageState extends State<Homepage> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        "Payment",
+                                        _transaction.typeTransaction,
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w700,
@@ -488,14 +513,19 @@ class _HomepageState extends State<Homepage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
                                     Text(
-                                      "+\$500.5",
+                                      _transaction.amount.toString() + " TNC",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700,
-                                          color: Colors.lightGreen),
+                                          color: _transaction.typeTransaction ==
+                                                  "Buying"
+                                              ? Colors.lightGreen
+                                              : Colors.orange),
                                     ),
                                     Text(
-                                      "26 Jan",
+                                      _transaction.date.day.toString() +
+                                          "/" +
+                                          _transaction.date.month.toString(),
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w700,
@@ -507,106 +537,6 @@ class _HomepageState extends State<Homepage> {
                             ),
                           );
                         },
-                        shrinkWrap: true,
-                        itemCount: 7,
-                        padding: EdgeInsets.all(0),
-                        controller: ScrollController(keepScrollOffset: false),
-                      ),
-
-                      //now expense
-                      SizedBox(
-                        height: 16,
-                      ),
-
-                      Container(
-                        child: Text(
-                          "YESTERDAY",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey[500]),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 32),
-                      ),
-
-                      SizedBox(
-                        height: 16,
-                      ),
-
-                      ListView.builder(
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 32),
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[100],
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(18))),
-                                  child: Icon(
-                                    Icons.directions_car,
-                                    color: Colors.lightBlue[900],
-                                  ),
-                                  padding: EdgeInsets.all(12),
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "Petrol",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.grey[900]),
-                                      ),
-                                      Text(
-                                        "Payment from Saad",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.grey[500]),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      "-\$500.5",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.orange),
-                                    ),
-                                    Text(
-                                      "26 Jan",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.grey[500]),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        padding: EdgeInsets.all(0),
-                        controller: ScrollController(keepScrollOffset: false),
                       ),
 
                       //now expense

@@ -10,6 +10,10 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
+Transaction transactionFromJson(String str) =>
+    Transaction.fromJson(json.decode(str));
+String transactionToJson(User data) => json.encode(data.toJson());
+
 class UserModel {
   UserModel({
     this.user,
