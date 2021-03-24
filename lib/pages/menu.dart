@@ -1,6 +1,8 @@
 import 'package:TunCoinWallet/pages/home.dart';
 import 'package:TunCoinWallet/pages/login.dart';
+import 'package:TunCoinWallet/pages/news.dart';
 import 'package:TunCoinWallet/pages/portfolio.dart';
+import 'package:TunCoinWallet/pages/send.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatefulWidget {
@@ -50,10 +52,13 @@ class _MenuState extends State<Menu> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff13f4ef),
-        onPressed: () {},
+        onPressed: () async {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => NewsPage()));
+        },
         elevation: 0,
         child: Icon(
-          Icons.add,
+          Icons.article_outlined,
           color: Color(0xff001a33),
         ),
       ),
