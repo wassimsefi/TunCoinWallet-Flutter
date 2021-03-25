@@ -1,5 +1,19 @@
+import 'dart:convert';
+
+import 'package:TunCoinWallet/Model/cryptocurrency_model.dart';
+import 'package:TunCoinWallet/Model/user_model.dart';
+import 'package:TunCoinWallet/pages/accueil.dart';
+import 'package:TunCoinWallet/pages/send.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
+import 'package:TunCoinWallet/pages/statistical%20.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'buy.dart';
+import 'notification.dart';
 
 class Portfoliopage extends StatefulWidget {
   @override
@@ -7,6 +21,64 @@ class Portfoliopage extends StatefulWidget {
 }
 
 class _PortfoliopageState extends State<Portfoliopage> {
+  String id = "";
+  User _user;
+
+  Future getId() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id');
+    print("home : " + id);
+
+    //get User
+
+    final User user = await getUser(id);
+    setState(() {
+      _user = user;
+    });
+  }
+
+  Future logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Accueilpage()));
+  }
+
+  Future<User> getUser(String id) async {
+    final String apiUrl = "https://tuncoin.herokuapp.com/loggedUser/$id";
+
+    final Response = await http.get(apiUrl);
+
+    final String responseString = Response.body;
+
+    return userFromJson(responseString);
+  }
+
+  Future<List<Value>> getCryptocurrency() async {
+    final String apiUrl = "https://tuncoin.herokuapp.com/cryptocurrency/values";
+    final Response = await http.get(apiUrl);
+
+    if (Response.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(Response.body);
+
+      List<dynamic> body = json['values'];
+
+      List<Value> values =
+          body.map((dynamic item) => Value.fromJson(item)).toList();
+      return values;
+    } else {
+      throw ("Can't get the value");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getId();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,182 +86,233 @@ class _PortfoliopageState extends State<Portfoliopage> {
       width: double.infinity,
       child: Stack(
         children: <Widget>[
-          // Container for top data
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 32, vertical: 60),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "\$2589.90",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 36,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    Container(
-                      child: Row(
+          //Container for top data
+          FutureBuilder(
+            future: getUser(id),
+            builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 32, vertical: 60),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Icon(
-                            Icons.notifications,
-                            color: Colors.lightBlue[100],
+                          Text(
+                            _user.balance.toString() + " TNC",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 36,
+                                fontWeight: FontWeight.w700),
                           ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Colors.white,
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/logo2.png',
-                                fit: BoxFit.contain,
-                              ),
+                          Container(
+                            child: Row(
+                              children: <Widget>[
+                                InkWell(
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.notifications,
+                                      color: Colors.lightBlue[100],
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                NotificationPage()));
+                                  },
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.white,
+                                  child: ClipOval(
+                                    child: Image.asset(
+                                      'assets/logo2.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           )
                         ],
                       ),
-                    )
-                  ],
-                ),
-                Text(
-                  "Available Balance",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: Colors.blue[100]),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    InkWell(
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Color.fromRGBO(243, 245, 248, 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(18))),
-                              child: Icon(
-                                Icons.send_rounded,
-                                color: Colors.blue[900],
-                                size: 30,
+                      Text(
+                        "Available Balance",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            color: Colors.blue[100]),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          InkWell(
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(243, 245, 248, 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(18))),
+                                    child: Icon(
+                                      Icons.send_rounded,
+                                      color: Colors.blue[900],
+                                      size: 30,
+                                    ),
+                                    padding: EdgeInsets.all(12),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    "Send",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                        color: Colors.blue[100]),
+                                  ),
+                                ],
                               ),
-                              padding: EdgeInsets.all(12),
                             ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              "Send",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 14,
-                                  color: Colors.blue[100]),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => SignupPage()));
-                      },
-                    ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(243, 245, 248, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(18))),
-                            child: Icon(
-                              Icons.get_app_rounded,
-                              color: Colors.blue[900],
-                              size: 30,
-                            ),
-                            padding: EdgeInsets.all(12),
+                            onTap: () async {
+                              print("object : " + id);
+                              print("home mail " + _user.email);
+
+                              print("length transaction  " +
+                                  _user.transaction.length.toString());
+
+                              print("balance mail " + _user.balance.toString());
+
+                              print("user : " + userToJson(_user));
+                              //  final Transaction _transaction =  userToJson(_user)[]
+
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => SendPage()));
+                            },
                           ),
-                          SizedBox(
-                            height: 4,
+                          InkWell(
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(243, 245, 248, 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(18))),
+                                    child: Icon(
+                                      Icons.get_app_rounded,
+                                      color: Colors.blue[900],
+                                      size: 30,
+                                    ),
+                                    padding: EdgeInsets.all(12),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    "Buy",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                        color: Colors.blue[100]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => BuyPage()));
+                            },
                           ),
-                          Text(
-                            "Buy",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: Colors.blue[100]),
+                          InkWell(
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(243, 245, 248, 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(18))),
+                                    child: Icon(
+                                      Icons.stacked_bar_chart,
+                                      color: Colors.blue[900],
+                                      size: 30,
+                                    ),
+                                    padding: EdgeInsets.all(12),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    "Statistical",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                        color: Colors.blue[100]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => SendPage()));
+                            },
+                          ),
+                          InkWell(
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Color.fromRGBO(243, 245, 248, 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(18))),
+                                    child: Icon(
+                                      Icons.logout,
+                                      color: Colors.blue[900],
+                                      size: 30,
+                                    ),
+                                    padding: EdgeInsets.all(12),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    "LogOut",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14,
+                                        color: Colors.blue[100]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              logOut();
+                            },
                           ),
                         ],
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(243, 245, 248, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(18))),
-                            child: Icon(
-                              Icons.attach_money,
-                              color: Colors.blue[900],
-                              size: 30,
-                            ),
-                            padding: EdgeInsets.all(12),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "Loan",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: Colors.blue[100]),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(243, 245, 248, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(18))),
-                            child: Icon(
-                              Icons.trending_down,
-                              color: Colors.blue[900],
-                              size: 30,
-                            ),
-                            padding: EdgeInsets.all(12),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            "Topup",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: Colors.blue[100]),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
+                      )
+                    ],
+                  ),
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           ),
 
           //draggable sheet
@@ -234,301 +357,102 @@ class _PortfoliopageState extends State<Portfoliopage> {
                         height: 24,
                       ),
 
-                      // //Container for buttons
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(horizontal: 32),
-                      //   child: Row(
-                      //     children: <Widget>[
-                      //       Container(
-                      //         child: Text(
-                      //           "All",
-                      //           style: TextStyle(
-                      //               fontWeight: FontWeight.w700,
-                      //               fontSize: 14,
-                      //               color: Colors.grey[900]),
-                      //         ),
-                      //         decoration: BoxDecoration(
-                      //             color: Colors.white,
-                      //             borderRadius:
-                      //                 BorderRadius.all(Radius.circular(20)),
-                      //             boxShadow: [
-                      //               BoxShadow(
-                      //                   color: Colors.grey[200],
-                      //                   blurRadius: 10.0,
-                      //                   spreadRadius: 4.5)
-                      //             ]),
-                      //         padding: EdgeInsets.symmetric(
-                      //             horizontal: 20, vertical: 10),
-                      //       ),
-                      //       SizedBox(
-                      //         width: 16,
-                      //       ),
-                      //       Container(
-                      //         child: Row(
-                      //           children: <Widget>[
-                      //             CircleAvatar(
-                      //               radius: 8,
-                      //               backgroundColor: Colors.green,
-                      //             ),
-                      //             SizedBox(
-                      //               width: 8,
-                      //             ),
-                      //             Text(
-                      //               "Income",
-                      //               style: TextStyle(
-                      //                   fontWeight: FontWeight.w700,
-                      //                   fontSize: 14,
-                      //                   color: Colors.grey[900]),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //         decoration: BoxDecoration(
-                      //             color: Colors.white,
-                      //             borderRadius:
-                      //                 BorderRadius.all(Radius.circular(20)),
-                      //             boxShadow: [
-                      //               BoxShadow(
-                      //                   color: Colors.grey[200],
-                      //                   blurRadius: 10.0,
-                      //                   spreadRadius: 4.5)
-                      //             ]),
-                      //         padding: EdgeInsets.symmetric(
-                      //             horizontal: 20, vertical: 10),
-                      //       ),
-                      //       SizedBox(
-                      //         width: 16,
-                      //       ),
-                      //       Container(
-                      //         child: Row(
-                      //           children: <Widget>[
-                      //             CircleAvatar(
-                      //               radius: 8,
-                      //               backgroundColor: Colors.orange,
-                      //             ),
-                      //             SizedBox(
-                      //               width: 8,
-                      //             ),
-                      //             Text(
-                      //               "Expenses",
-                      //               style: TextStyle(
-                      //                   fontWeight: FontWeight.w700,
-                      //                   fontSize: 14,
-                      //                   color: Colors.grey[900]),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //         decoration: BoxDecoration(
-                      //             color: Colors.white,
-                      //             borderRadius:
-                      //                 BorderRadius.all(Radius.circular(20)),
-                      //             boxShadow: [
-                      //               BoxShadow(
-                      //                   color: Colors.grey[200],
-                      //                   blurRadius: 10.0,
-                      //                   spreadRadius: 4.5)
-                      //             ]),
-                      //         padding: EdgeInsets.symmetric(
-                      //             horizontal: 20, vertical: 10),
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
-
-                      // SizedBox(
-                      //   height: 16,
-                      // ),
-                      // //Container Listview for expenses and incomes
-                      // Container(
-                      //   child: Text(
-                      //     "TODAY",
-                      //     style: TextStyle(
-                      //         fontSize: 15,
-                      //         fontWeight: FontWeight.w700,
-                      //         color: Colors.grey[500]),
-                      //   ),
-                      //   padding: EdgeInsets.symmetric(horizontal: 32),
-                      // ),
-
-                      // SizedBox(
-                      //   height: 16,
-                      // ),
-
-                      // ListView.builder(
-                      //   itemBuilder: (context, index) {
-                      //     return Container(
-                      //       margin: EdgeInsets.symmetric(horizontal: 32),
-                      //       padding: EdgeInsets.all(16),
-                      //       decoration: BoxDecoration(
-                      //           color: Colors.white,
-                      //           borderRadius:
-                      //               BorderRadius.all(Radius.circular(20))),
-                      //       child: Row(
-                      //         children: <Widget>[
-                      //           Container(
-                      //             decoration: BoxDecoration(
-                      //                 color: Colors.grey[100],
-                      //                 borderRadius: BorderRadius.all(
-                      //                     Radius.circular(18))),
-                      //             child: Icon(
-                      //               Icons.date_range,
-                      //               color: Colors.lightBlue[900],
-                      //             ),
-                      //             padding: EdgeInsets.all(12),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 16,
-                      //           ),
-                      //           Expanded(
-                      //             child: Column(
-                      //               crossAxisAlignment:
-                      //                   CrossAxisAlignment.start,
-                      //               children: <Widget>[
-                      //                 Text(
-                      //                   "Payment",
-                      //                   style: TextStyle(
-                      //                       fontSize: 18,
-                      //                       fontWeight: FontWeight.w700,
-                      //                       color: Colors.grey[900]),
-                      //                 ),
-                      //                 Text(
-                      //                   "Payment from Saad",
-                      //                   style: TextStyle(
-                      //                       fontSize: 15,
-                      //                       fontWeight: FontWeight.w700,
-                      //                       color: Colors.grey[500]),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //           Column(
-                      //             crossAxisAlignment: CrossAxisAlignment.end,
-                      //             children: <Widget>[
-                      //               Text(
-                      //                 "+\$500.5",
-                      //                 style: TextStyle(
-                      //                     fontSize: 18,
-                      //                     fontWeight: FontWeight.w700,
-                      //                     color: Colors.lightGreen),
-                      //               ),
-                      //               Text(
-                      //                 "26 Jan",
-                      //                 style: TextStyle(
-                      //                     fontSize: 15,
-                      //                     fontWeight: FontWeight.w700,
-                      //                     color: Colors.grey[500]),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     );
-                      //   },
-                      //   shrinkWrap: true,
-                      //   itemCount: 3,
-                      //   padding: EdgeInsets.all(0),
-                      //   controller: ScrollController(keepScrollOffset: false),
-                      // ),
-
-                      // //now expense
-                      // SizedBox(
-                      //   height: 16,
-                      // ),
-
-                      // Container(
-                      //   child: Text(
-                      //     "YESTERDAY",
-                      //     style: TextStyle(
-                      //         fontSize: 15,
-                      //         fontWeight: FontWeight.w700,
-                      //         color: Colors.grey[500]),
-                      //   ),
-                      //   padding: EdgeInsets.symmetric(horizontal: 32),
-                      // ),
-
-                      // SizedBox(
-                      //   height: 16,
-                      // ),
-
-                      // ListView.builder(
-                      //   itemBuilder: (context, index) {
-                      //     return Container(
-                      //       margin: EdgeInsets.symmetric(horizontal: 32),
-                      //       padding: EdgeInsets.all(16),
-                      //       decoration: BoxDecoration(
-                      //           color: Colors.white,
-                      //           borderRadius:
-                      //               BorderRadius.all(Radius.circular(20))),
-                      //       child: Row(
-                      //         children: <Widget>[
-                      //           Container(
-                      //             decoration: BoxDecoration(
-                      //                 color: Colors.grey[100],
-                      //                 borderRadius: BorderRadius.all(
-                      //                     Radius.circular(18))),
-                      //             child: Icon(
-                      //               Icons.directions_car,
-                      //               color: Colors.lightBlue[900],
-                      //             ),
-                      //             padding: EdgeInsets.all(12),
-                      //           ),
-                      //           SizedBox(
-                      //             width: 16,
-                      //           ),
-                      //           Expanded(
-                      //             child: Column(
-                      //               crossAxisAlignment:
-                      //                   CrossAxisAlignment.start,
-                      //               children: <Widget>[
-                      //                 Text(
-                      //                   "Petrol",
-                      //                   style: TextStyle(
-                      //                       fontSize: 18,
-                      //                       fontWeight: FontWeight.w700,
-                      //                       color: Colors.grey[900]),
-                      //                 ),
-                      //                 Text(
-                      //                   "Payment from Saad",
-                      //                   style: TextStyle(
-                      //                       fontSize: 15,
-                      //                       fontWeight: FontWeight.w700,
-                      //                       color: Colors.grey[500]),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //           Column(
-                      //             crossAxisAlignment: CrossAxisAlignment.end,
-                      //             children: <Widget>[
-                      //               Text(
-                      //                 "-\$500.5",
-                      //                 style: TextStyle(
-                      //                     fontSize: 18,
-                      //                     fontWeight: FontWeight.w700,
-                      //                     color: Colors.orange),
-                      //               ),
-                      //               Text(
-                      //                 "26 Jan",
-                      //                 style: TextStyle(
-                      //                     fontSize: 15,
-                      //                     fontWeight: FontWeight.w700,
-                      //                     color: Colors.grey[500]),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     );
-                      //   },
-                      //   shrinkWrap: true,
-                      //   itemCount: 4,
-                      //   padding: EdgeInsets.all(0),
-                      //   controller: ScrollController(keepScrollOffset: false),
-                      // ),
+                      //Container for buttons
+                      FutureBuilder(
+                        future: getCryptocurrency(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Value>> snapshot) {
+                          if (snapshot.hasData) {
+                            List<Value> values = snapshot.data;
+                            return ListView.builder(
+                              padding: EdgeInsets.all(0),
+                              controller:
+                                  ScrollController(keepScrollOffset: false),
+                              itemCount: values.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 32, vertical: 10),
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[100],
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(18))),
+                                        child: Icon(
+                                          Icons.date_range,
+                                          color: Colors.lightBlue[900],
+                                        ),
+                                        padding: EdgeInsets.all(12),
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              values[index].currency,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.grey[900]),
+                                            ),
+                                            Text(
+                                              "Payment from Saad",
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.grey[500]),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          Text(
+                                            values[index].currency,
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.orange),
+                                          ),
+                                          Text(
+                                            values[index].currency,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.grey[500]),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
 
                       //now expense
                     ],
                   ),
-                  // controller: scrollController,
+                  controller: scrollController,
                 ),
               );
             },
