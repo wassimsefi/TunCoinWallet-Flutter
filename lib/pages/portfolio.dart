@@ -368,6 +368,100 @@ class _PortfoliopageState extends State<Portfoliopage> {
                             SizedBox(
                               height: 16,
                             ),
+                            Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 32, vertical: 10),
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: Row(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: Colors.white,
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/logo2.png',
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "TNC",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.grey[900]),
+                                        ),
+                                        Text(
+                                          "Tuncoin",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.grey[500]),
+                                        ),
+                                        Text(
+                                          "Rank : 99",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.grey[500]),
+                                        ),
+                                        Text(
+                                          "date : 2021/3",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.grey[500]),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(
+                                        " £ 0.125",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.redAccent),
+                                      ),
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            WidgetSpan(
+                                              child: Icon(
+                                                Icons.arrow_circle_up_sharp,
+                                                size: 18,
+                                                color: Colors.green,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: " 1.28",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.green),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
 
                             ListView.builder(
                               padding: EdgeInsets.all(0),
@@ -376,6 +470,10 @@ class _PortfoliopageState extends State<Portfoliopage> {
                               itemCount: values.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
+                                var taux = double.parse(values[index]
+                                        .the1D
+                                        .marketCapChangePct) *
+                                    100;
                                 return Container(
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 32, vertical: 10),
@@ -425,6 +523,22 @@ class _PortfoliopageState extends State<Portfoliopage> {
                                                   fontWeight: FontWeight.w700,
                                                   color: Colors.grey[500]),
                                             ),
+                                            Text(
+                                              "date : " +
+                                                  values[index]
+                                                      .firstCandle
+                                                      .year
+                                                      .toString() +
+                                                  "/" +
+                                                  values[index]
+                                                      .firstCandle
+                                                      .month
+                                                      .toString(),
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.grey[500]),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -433,31 +547,34 @@ class _PortfoliopageState extends State<Portfoliopage> {
                                             CrossAxisAlignment.end,
                                         children: <Widget>[
                                           Text(
-                                            values[index].price,
+                                            " £ " + values[index].price,
                                             style: TextStyle(
                                                 fontSize: 13,
                                                 fontWeight: FontWeight.w700,
                                                 color: Colors.redAccent),
                                           ),
-                                          Text(
-                                            values[index]
-                                                    .priceDate
-                                                    .year
-                                                    .toString() +
-                                                "/" +
-                                                values[index]
-                                                    .priceDate
-                                                    .month
-                                                    .toString() +
-                                                "/" +
-                                                values[index]
-                                                    .priceDate
-                                                    .day
-                                                    .toString(),
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.grey[500]),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                WidgetSpan(
+                                                  child: Icon(
+                                                    Icons.arrow_circle_up_sharp,
+                                                    size: 18,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: " " +
+                                                      taux.toString() +
+                                                      "%",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Colors.green),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
