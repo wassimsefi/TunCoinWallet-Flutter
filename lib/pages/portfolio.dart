@@ -23,6 +23,7 @@ class Portfoliopage extends StatefulWidget {
 class _PortfoliopageState extends State<Portfoliopage> {
   String id = "";
   User _user;
+  var logoCrypto = ['imageBitcoin.png', 'logoEth.png', 'logoXrp.png'];
 
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +78,7 @@ class _PortfoliopageState extends State<Portfoliopage> {
     // TODO: implement initState
     super.initState();
     getId();
+    getCryptocurrency();
   }
 
   @override
@@ -315,56 +317,59 @@ class _PortfoliopageState extends State<Portfoliopage> {
             },
           ),
 
-          //draggable sheet
-          DraggableScrollableSheet(
-            builder: (context, scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(245, 245, 245, 1),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 24,
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          FutureBuilder(
+            future: getCryptocurrency(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Value>> snapshot) {
+              if (snapshot.hasData) {
+                List<Value> values = snapshot.data;
+                return DraggableScrollableSheet(
+                  builder: (context, scrollController) {
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(245, 245, 245, 1),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40))),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              "Cryptocurrency :",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 24,
-                                  color: Colors.black),
+                            SizedBox(
+                              height: 24,
                             ),
-                            Text(
-                              "See all",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                  color: Colors.grey[800]),
-                            )
-                          ],
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 32),
-                      ),
-                      SizedBox(
-                        height: 24,
-                      ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Cryptocurrency",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 24,
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    "See all",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        color: Colors.grey[800]),
+                                  )
+                                ],
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 32),
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
 
-                      //Container for buttons
-                      FutureBuilder(
-                        future: getCryptocurrency(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<Value>> snapshot) {
-                          if (snapshot.hasData) {
-                            List<Value> values = snapshot.data;
-                            return ListView.builder(
+                            SizedBox(
+                              height: 16,
+                            ),
+
+                            ListView.builder(
                               padding: EdgeInsets.all(0),
                               controller:
                                   ScrollController(keepScrollOffset: false),
@@ -381,16 +386,15 @@ class _PortfoliopageState extends State<Portfoliopage> {
                                           Radius.circular(20))),
                                   child: Row(
                                     children: <Widget>[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[100],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(18))),
-                                        child: Icon(
-                                          Icons.date_range,
-                                          color: Colors.lightBlue[900],
+                                      CircleAvatar(
+                                        radius: 25,
+                                        backgroundColor: Colors.white,
+                                        child: ClipOval(
+                                          child: Image.asset(
+                                            'assets/' + logoCrypto[index],
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
-                                        padding: EdgeInsets.all(12),
                                       ),
                                       SizedBox(
                                         width: 16,
@@ -408,7 +412,14 @@ class _PortfoliopageState extends State<Portfoliopage> {
                                                   color: Colors.grey[900]),
                                             ),
                                             Text(
-                                              "Payment from Saad",
+                                              values[index].name,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.grey[500]),
+                                            ),
+                                            Text(
+                                              "Rank : " + values[index].rank,
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w700,
@@ -422,14 +433,27 @@ class _PortfoliopageState extends State<Portfoliopage> {
                                             CrossAxisAlignment.end,
                                         children: <Widget>[
                                           Text(
-                                            values[index].currency,
+                                            values[index].price,
                                             style: TextStyle(
-                                                fontSize: 18,
+                                                fontSize: 13,
                                                 fontWeight: FontWeight.w700,
-                                                color: Colors.orange),
+                                                color: Colors.redAccent),
                                           ),
                                           Text(
-                                            values[index].currency,
+                                            values[index]
+                                                    .priceDate
+                                                    .year
+                                                    .toString() +
+                                                "/" +
+                                                values[index]
+                                                    .priceDate
+                                                    .month
+                                                    .toString() +
+                                                "/" +
+                                                values[index]
+                                                    .priceDate
+                                                    .day
+                                                    .toString(),
                                             style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w700,
@@ -441,25 +465,26 @@ class _PortfoliopageState extends State<Portfoliopage> {
                                   ),
                                 );
                               },
-                            );
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
+                            ),
+                            //now expense
+                          ],
+                        ),
+                        controller: scrollController,
                       ),
-
-                      //now expense
-                    ],
-                  ),
-                  controller: scrollController,
-                ),
+                    );
+                  },
+                  initialChildSize: 0.65,
+                  minChildSize: 0.65,
+                  maxChildSize: 1,
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
               );
             },
-            initialChildSize: 0.65,
-            minChildSize: 0.65,
-            maxChildSize: 1,
-          )
+          ),
+
+          //draggable sheet
         ],
       ),
     );
