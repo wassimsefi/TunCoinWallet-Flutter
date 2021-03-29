@@ -448,7 +448,7 @@ class _PortfoliopageState extends State<Portfoliopage> {
                                               ),
                                             ),
                                             TextSpan(
-                                              text: " 1.28",
+                                              text: " 1.28%",
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w700,

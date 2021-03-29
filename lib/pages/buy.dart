@@ -1,8 +1,12 @@
 import 'package:TunCoinWallet/pages/home.dart';
 import 'package:TunCoinWallet/pages/login.dart';
 import 'package:TunCoinWallet/pages/menu.dart';
+import 'package:TunCoinWallet/widgets/line_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:convert';
 
 import 'dart:async';

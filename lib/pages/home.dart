@@ -246,7 +246,7 @@ class _HomepageState extends State<Homepage> {
                             onTap: () {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => SendPage()));
+                                      builder: (context) => SatisticalPage()));
                             },
                           ),
                           InkWell(
@@ -496,7 +496,10 @@ class _HomepageState extends State<Homepage> {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(18))),
                                         child: Icon(
-                                          Icons.date_range,
+                                          _transaction.typeTransaction ==
+                                                  "Buying"
+                                              ? Icons.send_rounded
+                                              : Icons.get_app_rounded,
                                           color: Colors.lightBlue[900],
                                         ),
                                         padding: EdgeInsets.all(12),
