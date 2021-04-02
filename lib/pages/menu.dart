@@ -4,6 +4,7 @@ import 'package:TunCoinWallet/pages/login.dart';
 import 'package:TunCoinWallet/pages/news.dart';
 import 'package:TunCoinWallet/pages/portfolio.dart';
 import 'package:TunCoinWallet/pages/send.dart';
+import 'package:TunCoinWallet/pages/settings.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class _MenuState extends State<Menu> {
     Homepage(),
     SendPage(),
     BuyPage(),
-    Portfoliopage(),
+    SettingsPage(),
   ]; //screens for each tab
 
   int selectedIndex = 0;

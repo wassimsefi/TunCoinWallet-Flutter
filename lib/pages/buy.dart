@@ -5,6 +5,7 @@ import 'package:TunCoinWallet/Model/cryptocurrency_model.dart';
 import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/Crypto.dart';
 import 'package:TunCoinWallet/pages/accueil.dart';
+import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:TunCoinWallet/pages/news.dart';
 import 'package:TunCoinWallet/pages/send.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
@@ -77,15 +78,11 @@ class _BuyPageState extends State<BuyPage> {
     }
   }
 
-  Future<String> BuyAmount(String id, int amount) async {
+  Future BuyAmount(String id, String amount) async {
     final String apiUrl = "https://tuncoin.herokuapp.com/buy";
-
-    var req_body = new Map();
-
-    req_body['id'] = id;
-    req_body['amount'] = amount;
-
-    final Response = await http.post(apiUrl, body: jsonEncode(req_body));
+    int amount1 = int.parse(amount);
+    final Response =
+        await http.post(apiUrl, body: {"id": id, "amount": amount});
 
     if (Response.statusCode == 200) {
       showDialog<String>(
@@ -98,7 +95,8 @@ class _BuyPageState extends State<BuyPage> {
           ),
           actions: <Widget>[
             FlatButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
+                onPressed: () => Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Menu())),
                 child: Text('OK'))
           ],
         ),
@@ -548,7 +546,7 @@ class _BuyPageState extends State<BuyPage> {
                               ),
                               child: FlatButton(
                                 child: Text(
-                                  'Send',
+                                  'Buy',
                                   style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w900,
@@ -563,7 +561,7 @@ class _BuyPageState extends State<BuyPage> {
                                   if (_formkey.currentState.validate()) {
                                     print("hello ");
 
-                                    int amount = int.parse(_amount.text);
+                                    String amount = _amount.text;
                                     String id = _user.id;
 
                                     print("id!!!! : " + id);
