@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
       title: 'TunCoin',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.black,
-        bottomAppBarColor: Colors.white,
-        bottomAppBarTheme: BottomAppBarTheme(color: Colors.white),
+        primaryColor: Color(0xff001a33),
+        bottomAppBarColor: Color(0xff001a33),
+        bottomAppBarTheme: BottomAppBarTheme(color: Color(0xff001a33)),
         brightness: Brightness.dark,
-        hintColor: Colors.white,
+        hintColor: Color(0xff001a33),
       ),
       home: SplashScreen(),
       routes: routes,
@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<Timer> loadData() async {
-    return new Timer(Duration(seconds: 6), onDoneLoading);
+    return new Timer(Duration(seconds: 3), onDoneLoading);
   }
 
   onDoneLoading() async {

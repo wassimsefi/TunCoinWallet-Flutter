@@ -1,8 +1,10 @@
+import 'package:TunCoinWallet/pages/buy.dart';
 import 'package:TunCoinWallet/pages/home.dart';
 import 'package:TunCoinWallet/pages/login.dart';
 import 'package:TunCoinWallet/pages/news.dart';
 import 'package:TunCoinWallet/pages/portfolio.dart';
 import 'package:TunCoinWallet/pages/send.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatefulWidget {
@@ -13,57 +15,37 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> {
   var screens = [
     Homepage(),
+    SendPage(),
+    BuyPage(),
     Portfoliopage(),
   ]; //screens for each tab
 
-  int selectedTab = 0;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    var bottomNavigationBarItem2 = BottomNavigationBarItem(
-      icon: Icon(Icons.credit_card),
-      title: Text("Cryptocurrency"),
-    );
-    var bottomNavigationBarItem = bottomNavigationBarItem2;
     return Scaffold(
       backgroundColor: Color.fromRGBO(0, 26, 51, 1),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromRGBO(0, 26, 51, 1),
+      bottomNavigationBar: CurvedNavigationBar(
+        color: Color.fromRGBO(0, 26, 51, 1),
+        height: 65,
+        backgroundColor: Colors.grey[200],
+        index: selectedIndex,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: Color(0xff13f4ef),
-            ),
-            title: Text("Home",
-                style: new TextStyle(
-                  color: const Color(0xff13f4ef),
-                )),
-          ),
-          bottomNavigationBarItem,
+          Icon(Icons.home, color: Colors.grey[200]),
+          Icon(Icons.send_rounded, color: Colors.grey[200]),
+          Icon(Icons.get_app_rounded, color: Colors.grey[200]),
+          Icon(Icons.credit_card_rounded, color: Colors.grey[200]),
         ],
         onTap: (index) {
           setState(() {
-            selectedTab = index;
+            selectedIndex = index;
           });
         },
-        showUnselectedLabels: true,
-        iconSize: 30,
+        animationCurve: Curves.easeInBack,
+        animationDuration: const Duration(milliseconds: 300),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff13f4ef),
-        onPressed: () async {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => NewsPage()));
-        },
-        elevation: 0,
-        child: Icon(
-          Icons.article_outlined,
-          color: Color(0xff001a33),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: screens[selectedTab],
+      body: screens[selectedIndex],
     );
   }
 }

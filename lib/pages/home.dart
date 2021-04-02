@@ -1,5 +1,8 @@
 import 'package:TunCoinWallet/Model/user_model.dart';
+import 'package:TunCoinWallet/pages/Crypto.dart';
 import 'package:TunCoinWallet/pages/accueil.dart';
+import 'package:TunCoinWallet/pages/news.dart';
+import 'package:TunCoinWallet/pages/portfolio.dart';
 import 'package:TunCoinWallet/pages/send.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
 import 'package:TunCoinWallet/pages/statistical%20.dart';
@@ -153,7 +156,7 @@ class _HomepageState extends State<Homepage> {
                                     height: 4,
                                   ),
                                   Text(
-                                    "Send",
+                                    "News",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 14,
@@ -176,7 +179,7 @@ class _HomepageState extends State<Homepage> {
 
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => SendPage()));
+                                      builder: (context) => NewsPage()));
                             },
                           ),
                           InkWell(
@@ -199,7 +202,7 @@ class _HomepageState extends State<Homepage> {
                                     height: 4,
                                   ),
                                   Text(
-                                    "Buy",
+                                    "Cryptocurrency",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 14,
@@ -211,7 +214,7 @@ class _HomepageState extends State<Homepage> {
                             onTap: () {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => BuyPage()));
+                                      builder: (context) => Cryptopage()));
                             },
                           ),
                           InkWell(
