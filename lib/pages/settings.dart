@@ -2,6 +2,8 @@ import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/accueil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,6 +15,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   String id = "";
   User _user;
+
+  String qrCode = 'Unknown';
 
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -103,10 +107,10 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 10,
             ),
-            buildAccountOptionRow(context, "Change password"),
-            buildAccountOptionRow(context, "Content settings"),
-            buildAccountOptionRow3(context),
-            buildAccountOptionRow(context, "Language"),
+            buildAccountOptionRowID(context),
+            buildAccountOptionRowQRCode(),
+            buildAccountOptionRowScoial(context),
+            buildAccountOptionRowLanguage(context),
             buildAccountOptionRow(context, "Privacy and security"),
             SizedBox(
               height: 40,
@@ -195,24 +199,7 @@ class _SettingsPageState extends State<SettingsPage> {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(title),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("Option 1"),
-                    Text("Option 2"),
-                    Text("Option 3"),
-                  ],
-                ),
-                actions: [
-                  FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text("Close")),
-                ],
-              );
+              return AdvanceCustomAlert();
             });
       },
       child: Padding(
@@ -238,7 +225,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  GestureDetector buildAccountOptionRow3(BuildContext context) {
+  GestureDetector buildAccountOptionRowScoial(BuildContext context) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -249,7 +236,25 @@ class _SettingsPageState extends State<SettingsPage> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Site web ....."),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          WidgetSpan(
+                            child: Icon(
+                              Icons.web_asset_rounded,
+                              size: 18,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " http://www.TunCoin.tn",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
                 actions: [
@@ -284,5 +289,210 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  GestureDetector buildAccountOptionRowQRCode() {
+    return GestureDetector(
+      onTap: () => scanQRCode(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "QR Code",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildAccountOptionRowID(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("ID Wallet : \n"),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _user.id,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Close")),
+                ],
+                backgroundColor: Color(0xff001a33),
+              );
+            });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "ID Wallet",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildAccountOptionRowLanguage(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Language"),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Anglais"),
+                  ],
+                ),
+                actions: [
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Close")),
+                ],
+                backgroundColor: Color(0xff001a33),
+              );
+            });
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Language",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future scanQRCode() async {
+    try {
+      final qrCode = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.QR);
+      print(qrCode);
+
+      if (!mounted) return;
+      setState(() {
+        this.qrCode = qrCode;
+      });
+    } on PlatformException {
+      qrCode = 'failed to get platform version. ';
+    }
+  }
+}
+
+class AdvanceCustomAlert extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        backgroundColor: Color(0xff001a33),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+        child: Stack(
+          overflow: Overflow.visible,
+          alignment: Alignment.topCenter,
+          children: [
+            Container(
+              height: 250,
+              width: 350,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 70, 10, 10),
+                child: Column(
+                  children: [
+                    Text(
+                      'Warning !!!',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      'You can not access this file',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      color: Colors.green,
+                      child: Text(
+                        'Okay',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+                top: -60,
+                child: CircleAvatar(
+                  backgroundColor: Colors.green,
+                  radius: 60,
+                  child: Icon(
+                    Icons.check_rounded,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                )),
+          ],
+        ));
   }
 }
