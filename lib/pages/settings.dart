@@ -1,9 +1,13 @@
 import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/accueil.dart';
+import 'package:TunCoinWallet/pages/news.dart';
+import 'package:TunCoinWallet/widgets/Scan.dart';
+import 'package:TunCoinWallet/widgets/generate.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -108,10 +112,10 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 10,
             ),
             buildAccountOptionRowID(context),
-            buildAccountOptionRowQRCode(),
+            buildAccountOptionRowQRCodeScanner(context),
+            buildAccountOptionRowQRCodeGenerator(),
             buildAccountOptionRowScoial(context),
             buildAccountOptionRowLanguage(context),
-            buildAccountOptionRow(context, "Privacy and security"),
             SizedBox(
               height: 40,
             ),
@@ -291,9 +295,10 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  GestureDetector buildAccountOptionRowQRCode() {
+  GestureDetector buildAccountOptionRowQRCodeScanner(BuildContext context) {
     return GestureDetector(
-      onTap: () => scanQRCode(),
+      onTap: () => Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Scan())),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
@@ -301,6 +306,33 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             Text(
               "QR Code",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildAccountOptionRowQRCodeGenerator() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Generate())),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Generator",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
@@ -419,20 +451,20 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Future scanQRCode() async {
-    try {
-      final qrCode = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.QR);
-      print(qrCode);
+  // Future scanQRCode() async {
+  //   try {
+  //     final qrCode = await FlutterBarcodeScanner.scanBarcode(
+  //         "#ff6666", "Cancel", true, ScanMode.QR);
+  //     print(qrCode);
 
-      if (!mounted) return;
-      setState(() {
-        this.qrCode = qrCode;
-      });
-    } on PlatformException {
-      qrCode = 'failed to get platform version. ';
-    }
-  }
+  //     if (!mounted) return;
+  //     setState(() {
+  //       this.qrCode = qrCode;
+  //     });
+  //   } on PlatformException {
+  //     qrCode = 'failed to get platform version. ';
+  //   }
+  // }
 }
 
 class AdvanceCustomAlert extends StatelessWidget {
