@@ -3,6 +3,8 @@ import 'package:TunCoinWallet/pages/accueil.dart';
 import 'package:TunCoinWallet/pages/news.dart';
 import 'package:TunCoinWallet/widgets/Scan.dart';
 import 'package:TunCoinWallet/widgets/generate.dart';
+import 'package:TunCoinWallet/pages/Updatepassword.dart';
+
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -454,8 +456,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   GestureDetector buildAccountOptionRowChangedpwd(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => Scan())),
+      onTap: () => Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => UpdatepasswordPage())),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
