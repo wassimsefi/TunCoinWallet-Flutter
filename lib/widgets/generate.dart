@@ -1,6 +1,7 @@
 import 'package:TunCoinWallet/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:TunCoinWallet/pages/menu.dart';
 
 class Generate extends StatefulWidget {
   @override
@@ -21,8 +22,8 @@ class _GenerateState extends State<Generate> {
             Icons.arrow_back,
             color: Color(0xff001a33),
           ),
-          onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => SettingsPage())),
+          onPressed: () => Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (context) => Menu())),
         ),
         backgroundColor: Color(0xff13f4ef),
         actions: <Widget>[

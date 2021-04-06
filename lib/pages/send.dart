@@ -9,6 +9,8 @@ import 'package:TunCoinWallet/pages/send.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
 import 'package:TunCoinWallet/pages/statistical%20.dart';
 import 'package:flutter/material.dart';
+import 'package:TunCoinWallet/pages/menu.dart';
+
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,6 +30,8 @@ class _SendPageState extends State<SendPage> {
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController _amount = TextEditingController();
+  TextEditingController _idReciver = TextEditingController();
+
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,6 +77,51 @@ class _SendPageState extends State<SendPage> {
       return values;
     } else {
       throw ("Can't get the value");
+    }
+  }
+
+  Future SendAmount(String id, String amount, String idReciver) async {
+    final String apiUrl = "https://tuncoin.herokuapp.com/transaction";
+    // double amount1 = double.parse(amount);
+    final Response = await http.post(apiUrl, body: {
+      "idSender": id,
+      "idReciver": "60632225786f2f0004f11119",
+      "amount": amount
+    });
+
+    if (Response.statusCode == 200) {
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('It is OK'),
+          content: Text(
+            'Buy succes !! ',
+            style: TextStyle(fontSize: 20.0, color: Colors.red),
+          ),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () => Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Menu())),
+                child: Text('OK'))
+          ],
+        ),
+      );
+    } else {
+      throw Exception(showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Log In Error'),
+          content: Text(
+            'Account is not activated! ou not found! ',
+            style: TextStyle(fontSize: 20.0, color: Colors.red),
+          ),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: Text('OK'))
+          ],
+        ),
+      ));
     }
   }
 
@@ -442,26 +491,32 @@ class _SendPageState extends State<SendPage> {
 
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 1.0),
+                            horizontal: 40.0, vertical: 1.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16.0)),
-                            Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0)),
+                                padding: EdgeInsets.symmetric(vertical: 2.0)),
+                            Text(
+                              "From \n   My TuunCoin Wallet \nTo",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w200,
+                                  fontSize: 24,
+                                  color: Colors.black),
+                            ),
                             Form(
                               key: _formkey,
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.all(20.0),
+                                    padding:
+                                        EdgeInsets.only(right: 20, left: 20),
                                     child: TextFormField(
                                       style:
                                           TextStyle(color: Color(0xff001a33)),
-                                      controller: _amount,
+                                      controller: _idReciver,
                                       decoration: InputDecoration(
-                                        hintText: '0.00',
+                                        hintText: 'Entre TunCoin address',
                                         hintStyle: TextStyle(
                                             fontFamily: 'Montserrat',
                                             color: Color(0xff001a33)),
@@ -469,15 +524,54 @@ class _SendPageState extends State<SendPage> {
                                         contentPadding: EdgeInsets.all(16.0),
                                         prefixIcon: Icon(Icons.euro),
                                       ),
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       validator: (String value) {
                                         if (value.isEmpty) {
-                                          return "Please entre Amount ";
+                                          return "Please entre TunCoin address ";
                                         }
 
                                         return null;
                                       },
                                     ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextFormField(
+                                          style: TextStyle(
+                                            color: Color(0xff001a33),
+                                          ),
+                                          controller: _amount,
+                                          decoration: InputDecoration(
+                                            hintText: '0.00',
+                                            hintStyle: TextStyle(
+                                                fontFamily: 'Montserrat',
+                                                color: Color(0xff001a33)),
+                                            filled: true,
+                                            contentPadding:
+                                                EdgeInsets.all(16.0),
+                                            prefixIcon: Icon(Icons.euro),
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return "Please entre Amount ";
+                                            }
+
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          "TNC",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 24,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -516,7 +610,15 @@ class _SendPageState extends State<SendPage> {
                                   if (_formkey.currentState.validate()) {
                                     print("hello ");
 
-                                    final String email = _amount.text;
+                                    String amount = _amount.text;
+                                    String idReciver = _idReciver.text;
+
+                                    String id = _user.id;
+
+                                    print("id!!!! : " + id);
+                                    print("buy!!!! : " + amount.toString());
+
+                                    await SendAmount(id, amount, idReciver);
                                   } else {
                                     return;
                                   }

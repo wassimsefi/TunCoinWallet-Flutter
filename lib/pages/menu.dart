@@ -36,7 +36,7 @@ class _MenuState extends State<Menu> {
           Icon(Icons.home, color: Colors.grey[200]),
           Icon(Icons.send_rounded, color: Colors.grey[200]),
           Icon(Icons.get_app_rounded, color: Colors.grey[200]),
-          Icon(Icons.credit_card_rounded, color: Colors.grey[200]),
+          Icon(Icons.settings, color: Colors.grey[200]),
         ],
         onTap: (index) {
           setState(() {

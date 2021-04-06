@@ -1,6 +1,7 @@
 import 'package:TunCoinWallet/pages/settings.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:TunCoinWallet/pages/menu.dart';
 
 class Scan extends StatefulWidget {
   @override
@@ -22,8 +23,8 @@ class _ScanState extends State<Scan> {
             Icons.arrow_back,
             color: Color(0xff001a33),
           ),
-          onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => SettingsPage())),
+          onPressed: () => Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (context) => Menu())),
         ),
         backgroundColor: Color(0xff13f4ef),
         actions: <Widget>[

@@ -44,7 +44,7 @@ class User {
   String id;
   String email;
   String password;
-  double balance;
+  int balance;
   bool isConfimed;
 
   factory User.fromJson(Map<String, dynamic> json) => User(

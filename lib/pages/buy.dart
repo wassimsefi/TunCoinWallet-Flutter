@@ -80,7 +80,7 @@ class _BuyPageState extends State<BuyPage> {
 
   Future BuyAmount(String id, String amount) async {
     final String apiUrl = "https://tuncoin.herokuapp.com/buy";
-    int amount1 = int.parse(amount);
+    // double amount1 = double.parse(amount);
     final Response =
         await http.post(apiUrl, body: {"id": id, "amount": amount});
 

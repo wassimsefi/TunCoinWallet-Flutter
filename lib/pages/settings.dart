@@ -116,6 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
             buildAccountOptionRowQRCodeGenerator(),
             buildAccountOptionRowScoial(context),
             buildAccountOptionRowLanguage(context),
+            buildAccountOptionRowChangedpwd(context),
             SizedBox(
               height: 40,
             ),
@@ -435,6 +436,33 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             Text(
               "Language",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.grey,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector buildAccountOptionRowChangedpwd(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Scan())),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Update Password ",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
