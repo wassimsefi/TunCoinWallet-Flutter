@@ -87,18 +87,64 @@ class _BuyPageState extends State<BuyPage> {
     if (Response.statusCode == 200) {
       showDialog<String>(
         context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('It is OK'),
-          content: Text(
-            'Buy succes !! ',
-            style: TextStyle(fontSize: 20.0, color: Colors.red),
+        builder: (BuildContext context) => Dialog(
+          backgroundColor: Color(0xff001a33),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+          child: Stack(
+            overflow: Overflow.visible,
+            alignment: Alignment.topCenter,
+            children: [
+              Container(
+                height: 300,
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 70, 10, 10),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Success !!!',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Your transaction has been successfully done! + \n ' +
+                            amount +
+                            ' TNC',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => Menu())),
+                        color: Colors.green,
+                        child: Text(
+                          'Okay',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                  top: -60,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.green,
+                    radius: 60,
+                    child: Icon(
+                      Icons.check_rounded,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  )),
+            ],
           ),
-          actions: <Widget>[
-            FlatButton(
-                onPressed: () => Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Menu())),
-                child: Text('OK'))
-          ],
         ),
       );
     } else {
