@@ -1,16 +1,19 @@
 import 'dart:convert';
+import 'dart:ffi';
+
+import 'package:qr_flutter/qr_flutter.dart';
 
 import 'package:TunCoinWallet/Model/cryptocurrency_model.dart';
 import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/Crypto.dart';
 import 'package:TunCoinWallet/pages/accueil.dart';
+import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:TunCoinWallet/pages/news.dart';
 import 'package:TunCoinWallet/pages/send.dart';
 import 'package:TunCoinWallet/pages/sign_up.dart';
 import 'package:TunCoinWallet/pages/statistical%20.dart';
 import 'package:flutter/material.dart';
-import 'package:TunCoinWallet/pages/menu.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:TunCoinWallet/widgets/generate.dart';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -20,16 +23,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'buy.dart';
 import 'notification.dart';
 
-class SendPage extends StatefulWidget {
+class ReceivePage extends StatefulWidget {
   @override
-  _SendPageState createState() => _SendPageState();
+  _ReceivePageState createState() => _ReceivePageState();
 }
 
-class _SendPageState extends State<SendPage> {
+class _ReceivePageState extends State<ReceivePage> {
   String id = "";
   User _user;
-  String qrResult = "Not yet Scanned";
-
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController _amount = TextEditingController();
 
@@ -81,14 +82,11 @@ class _SendPageState extends State<SendPage> {
     }
   }
 
-  Future SendAmount(String id, String amount, String idReciver) async {
-    final String apiUrl = "https://tuncoin.herokuapp.com/transaction";
+  Future BuyAmount(String id, String amount) async {
+    final String apiUrl = "https://tuncoin.herokuapp.com/buy";
     // double amount1 = double.parse(amount);
-    final Response = await http.post(apiUrl, body: {
-      "idSender": id,
-      "idReciver": "60632225786f2f0004f11119",
-      "amount": amount
-    });
+    final Response =
+        await http.post(apiUrl, body: {"id": id, "amount": amount});
 
     if (Response.statusCode == 200) {
       showDialog<String>(
@@ -117,7 +115,7 @@ class _SendPageState extends State<SendPage> {
                         height: 5,
                       ),
                       Text(
-                        'Your transaction has been successfully done! \n -' +
+                        'Your transaction has been successfully done! + \n ' +
                             amount +
                             ' TNC',
                         style: TextStyle(fontSize: 20),
@@ -416,278 +414,82 @@ class _SendPageState extends State<SendPage> {
             },
           ),
 
-          DraggableScrollableSheet(
-            builder: (context, scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(245, 245, 245, 1),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+          FutureBuilder(
+            future: getUser(id),
+            builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+              if (snapshot.hasData) {
+                return DraggableScrollableSheet(
+                  builder: (context, scrollController) {
+                    return Container(
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(245, 245, 245, 1),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              topRight: Radius.circular(40))),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              "Send TunCoin",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 24,
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundColor: Colors.white,
-                              child: ClipOval(
-                                child: Image.asset(
-                                  'assets/logo2.png',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
                             SizedBox(
-                              width: 16,
+                              height: 10,
                             ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    "TunCoin",
+                                    "Receive TunCoin",
                                     style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.grey[900]),
-                                  ),
-                                  Text(
-                                    "1 TunCoin = \$ 0.1247",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.grey[500]),
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 24,
+                                        color: Colors.black),
                                   ),
                                 ],
                               ),
+                              padding: EdgeInsets.symmetric(horizontal: 32),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  "1 TunCoin = \$ 0.1247",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.grey[500]),
-                                ),
-                                Text(
-                                  " \$ 0.1247",
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.redAccent),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        child: Icon(
-                                          Icons.arrow_circle_up_sharp,
-                                          size: 18,
-                                          color: Colors.green,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: " 1.28%",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.green),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
 
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 40.0, vertical: 1.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.symmetric(vertical: 2.0)),
-                            Text(
-                              "From \n   My TuunCoin Wallet \nTo",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 24,
-                                  color: Colors.black),
+                            SizedBox(
+                              height: 16,
                             ),
-                            FlatButton(
-                              padding: EdgeInsets.symmetric(horizontal: 40),
-                              onPressed: () async {
-                                String scaning = await BarcodeScanner.scan();
 
-                                setState(() {
-                                  this.qrResult = scaning;
-                                });
-                              },
-                              child: Text('SCAN QR CODE',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    letterSpacing: 2.2,
-                                    color: Color(0xff001a33),
-                                  )),
-                              textColor: Color(0xff001a33),
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: Color(0xff001a33),
-                                      width: 1,
-                                      style: BorderStyle.solid),
-                                  borderRadius: BorderRadius.circular(50)),
-                            ),
-                            Text(
-                              qrResult,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18.0, color: Color(0xff001a33)),
-                            ),
-                            Form(
-                              key: _formkey,
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 32),
                               child: Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextFormField(
-                                          style: TextStyle(
-                                            color: Color(0xff001a33),
-                                          ),
-                                          controller: _amount,
-                                          decoration: InputDecoration(
-                                            hintText: '0.00',
-                                            hintStyle: TextStyle(
-                                                fontFamily: 'Montserrat',
-                                                color: Color(0xff001a33)),
-                                            filled: true,
-                                            contentPadding:
-                                                EdgeInsets.all(16.0),
-                                            prefixIcon: Icon(Icons.euro),
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                          validator: (String value) {
-                                            if (value.isEmpty) {
-                                              return "Please entre Amount ";
-                                            }
-
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          "TNC",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 24,
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    "My \n   Adrress TunCoin Wallet ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w200,
+                                        fontSize: 24,
+                                        color: Colors.black),
+                                  ),
+                                  Center(
+                                    child: QrImage(
+                                      data: _user.id,
+                                      size: 300,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0)),
-                            Container(
-                              width: 350.0,
-                              height: 43.0,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.bottomLeft,
-                                  stops: [0.1, 0.9],
-                                  colors: [
-                                    Color(0xff1d83ab),
-                                    //Color.fromRGBO(19, 244, 239, 1),
-                                    Color(0xff13f4ef),
-                                  ],
-                                ),
-                              ),
-                              child: FlatButton(
-                                child: Text(
-                                  'Send',
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 24,
-                                  ),
-                                ),
-                                //textColor: Colors.white,
-                                color: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
-                                onPressed: () async {
-                                  if (_formkey.currentState.validate()) {
-                                    print("hello ");
 
-                                    String amount = _amount.text;
-
-                                    String id = _user.id;
-
-                                    print("id!!!! : " + id);
-                                    print("buy!!!! : " + amount.toString());
-
-                                    await SendAmount(id, amount, qrResult);
-                                  } else {
-                                    return;
-                                  }
-                                },
-                              ),
-                            ),
+                            //now expense
                           ],
                         ),
-                      )
-
-                      //now expense
-                    ],
-                  ),
-                  controller: scrollController,
-                ),
+                        controller: scrollController,
+                      ),
+                    );
+                  },
+                  initialChildSize: 0.65,
+                  minChildSize: 0.65,
+                  maxChildSize: 1,
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
               );
             },
-            initialChildSize: 0.65,
-            minChildSize: 0.65,
-            maxChildSize: 1,
           ),
 
           //draggable sheet

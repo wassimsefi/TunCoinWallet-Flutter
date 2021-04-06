@@ -146,7 +146,7 @@ class _HomepageState extends State<Homepage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(18))),
                                     child: Icon(
-                                      Icons.send_rounded,
+                                      Icons.article_rounded,
                                       color: Colors.blue[900],
                                       size: 30,
                                     ),
@@ -192,7 +192,7 @@ class _HomepageState extends State<Homepage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(18))),
                                     child: Icon(
-                                      Icons.get_app_rounded,
+                                      Icons.euro_rounded,
                                       color: Colors.blue[900],
                                       size: 30,
                                     ),
@@ -202,7 +202,7 @@ class _HomepageState extends State<Homepage> {
                                     height: 4,
                                   ),
                                   Text(
-                                    "Cryptocurrency",
+                                    "Crypto",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 14,

@@ -95,7 +95,7 @@ class _GenerateState extends State<Generate> {
             Center(
               child: QrImage(
                 data: _user.id,
-                size: 400,
+                size: 150,
               ),
             ),
 

@@ -1,5 +1,7 @@
 import 'package:TunCoinWallet/pages/buy.dart';
 import 'package:TunCoinWallet/pages/home.dart';
+import 'package:TunCoinWallet/pages/receive.dart';
+
 import 'package:TunCoinWallet/pages/login.dart';
 import 'package:TunCoinWallet/pages/news.dart';
 import 'package:TunCoinWallet/pages/portfolio.dart';
@@ -17,6 +19,7 @@ class _MenuState extends State<Menu> {
   var screens = [
     Homepage(),
     SendPage(),
+    ReceivePage(),
     BuyPage(),
     SettingsPage(),
   ]; //screens for each tab
@@ -35,6 +38,7 @@ class _MenuState extends State<Menu> {
         items: [
           Icon(Icons.home, color: Colors.grey[200]),
           Icon(Icons.send_rounded, color: Colors.grey[200]),
+          Icon(Icons.call_received_rounded, color: Colors.grey[200]),
           Icon(Icons.get_app_rounded, color: Colors.grey[200]),
           Icon(Icons.settings, color: Colors.grey[200]),
         ],
