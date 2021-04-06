@@ -112,8 +112,8 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 10,
             ),
             buildAccountOptionRowID(context),
-            buildAccountOptionRowQRCodeScanner(context),
             buildAccountOptionRowQRCodeGenerator(),
+            buildAccountOptionRowQRCodeScanner(context),
             buildAccountOptionRowScoial(context),
             buildAccountOptionRowLanguage(context),
             buildAccountOptionRowChangedpwd(context),
@@ -306,7 +306,7 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "QR Code",
+              "QR Code Scanner",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
@@ -333,7 +333,7 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Generator",
+              "QR Code",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,

@@ -10,6 +10,7 @@ import 'package:TunCoinWallet/pages/sign_up.dart';
 import 'package:TunCoinWallet/pages/statistical%20.dart';
 import 'package:flutter/material.dart';
 import 'package:TunCoinWallet/pages/menu.dart';
+import 'package:barcode_scan/barcode_scan.dart';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -27,10 +28,10 @@ class SendPage extends StatefulWidget {
 class _SendPageState extends State<SendPage> {
   String id = "";
   User _user;
+  String qrResult = "Not yet Scanned";
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController _amount = TextEditingController();
-  TextEditingController _idReciver = TextEditingController();
 
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -504,36 +505,39 @@ class _SendPageState extends State<SendPage> {
                                   fontSize: 24,
                                   color: Colors.black),
                             ),
+                            FlatButton(
+                              padding: EdgeInsets.symmetric(horizontal: 40),
+                              onPressed: () async {
+                                String scaning = await BarcodeScanner.scan();
+
+                                setState(() {
+                                  this.qrResult = scaning;
+                                });
+                              },
+                              child: Text('SCAN QR CODE',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    letterSpacing: 2.2,
+                                    color: Color(0xff001a33),
+                                  )),
+                              textColor: Color(0xff001a33),
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      color: Color(0xff001a33),
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(50)),
+                            ),
+                            Text(
+                              qrResult,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Color(0xff001a33)),
+                            ),
                             Form(
                               key: _formkey,
                               child: Column(
                                 children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.only(right: 20, left: 20),
-                                    child: TextFormField(
-                                      style:
-                                          TextStyle(color: Color(0xff001a33)),
-                                      controller: _idReciver,
-                                      decoration: InputDecoration(
-                                        hintText: 'Entre TunCoin address',
-                                        hintStyle: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            color: Color(0xff001a33)),
-                                        filled: true,
-                                        contentPadding: EdgeInsets.all(16.0),
-                                        prefixIcon: Icon(Icons.euro),
-                                      ),
-                                      keyboardType: TextInputType.text,
-                                      validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return "Please entre TunCoin address ";
-                                        }
-
-                                        return null;
-                                      },
-                                    ),
-                                  ),
                                   Row(
                                     children: [
                                       Expanded(
@@ -611,14 +615,13 @@ class _SendPageState extends State<SendPage> {
                                     print("hello ");
 
                                     String amount = _amount.text;
-                                    String idReciver = _idReciver.text;
 
                                     String id = _user.id;
 
                                     print("id!!!! : " + id);
                                     print("buy!!!! : " + amount.toString());
 
-                                    await SendAmount(id, amount, idReciver);
+                                    await SendAmount(id, amount, qrResult);
                                   } else {
                                     return;
                                   }
