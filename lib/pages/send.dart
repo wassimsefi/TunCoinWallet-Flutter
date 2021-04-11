@@ -30,8 +30,12 @@ class _SendPageState extends State<SendPage> {
   User _user;
   String qrResult = "Not yet Scanned";
 
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController _amount = TextEditingController();
+  String _valueTND = "0";
+  String _devis = 'TND';
+  String _converted = '';
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -182,6 +186,26 @@ class _SendPageState extends State<SendPage> {
 
   @override
   Widget build(BuildContext context) {
+    // convertion
+    if (_valueTND == "") {
+      _converted = "0.0";
+      _valueTND = "0.0";
+    } else {
+      switch (_devis) {
+        case 'TND':
+          _converted = ((double.parse(_valueTND)) / 10).toString();
+          print("hhhhhh" + _devis);
+
+          break;
+        case 'EUR':
+          _converted = ((double.parse(_valueTND)) / 2).toString();
+          print("hhhhhh22222" + _devis);
+
+          break;
+        default:
+      }
+    }
+
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
@@ -551,6 +575,9 @@ class _SendPageState extends State<SendPage> {
                                   fontSize: 24,
                                   color: Colors.black),
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             FlatButton(
                               padding: EdgeInsets.symmetric(horizontal: 40),
                               onPressed: () async {
@@ -574,11 +601,17 @@ class _SendPageState extends State<SendPage> {
                                       style: BorderStyle.solid),
                                   borderRadius: BorderRadius.circular(50)),
                             ),
+                            SizedBox(
+                              height: 15,
+                            ),
                             Text(
                               qrResult,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18.0, color: Color(0xff001a33)),
+                            ),
+                            SizedBox(
+                              height: 15,
                             ),
                             Form(
                               key: _formkey,
@@ -591,6 +624,11 @@ class _SendPageState extends State<SendPage> {
                                           style: TextStyle(
                                             color: Color(0xff001a33),
                                           ),
+                                          onChanged: (String str) {
+                                            setState(() {
+                                              _valueTND = str;
+                                            });
+                                          },
                                           controller: _amount,
                                           decoration: InputDecoration(
                                             hintText: '0.00',
@@ -600,7 +638,8 @@ class _SendPageState extends State<SendPage> {
                                             filled: true,
                                             contentPadding:
                                                 EdgeInsets.all(16.0),
-                                            prefixIcon: Icon(Icons.euro),
+                                            prefixIcon:
+                                                Icon(Icons.title_rounded),
                                           ),
                                           keyboardType: TextInputType.number,
                                           validator: (String value) {
@@ -625,6 +664,91 @@ class _SendPageState extends State<SendPage> {
                                   ),
                                 ],
                               ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0)),
+                            Container(
+                                margin: EdgeInsets.only(top: 25),
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Radio(
+                                          activeColor: Colors.black,
+                                          onChanged: (v) {
+                                            setState(() {
+                                              _devis = v;
+                                            });
+                                          },
+                                          groupValue: _devis,
+                                          value: 'TND',
+                                        ),
+                                        Text(
+                                          'TND',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Radio(
+                                          activeColor: Colors.black,
+                                          onChanged: (v) {
+                                            setState(() {
+                                              _devis = v;
+                                            });
+                                          },
+                                          groupValue: _devis,
+                                          value: 'EUR',
+                                        ),
+                                        Text(
+                                          'EUR',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            Row(
+                              children: [
+                                Container(
+                                  width: ((MediaQuery.of(context).size.width) -
+                                          80) /
+                                      3,
+                                  margin: EdgeInsets.only(top: 25),
+                                  child: Text(
+                                    '$_valueTND TNC',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Container(
+                                  height: 30,
+                                  width: ((MediaQuery.of(context).size.width) -
+                                          80) /
+                                      3,
+                                  child: Icon(
+                                    Icons.double_arrow_outlined,
+                                    size: 50,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 25),
+                                  width: ((MediaQuery.of(context).size.width) -
+                                          80) /
+                                      3,
+                                  child: Text(
+                                    '$_converted $_devis',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                              ],
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0)),
