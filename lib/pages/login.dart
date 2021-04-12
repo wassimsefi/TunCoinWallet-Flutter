@@ -72,11 +72,26 @@ class _LoginPageState extends State<LoginPage> {
     bool authenticated = false;
     try {
       authenticated = await auth.authenticateWithBiometrics(
-          localizedReason: "Scan your finger print to authenticate",
-          useErrorDialogs: true,
-          stickyAuth: false);
+        localizedReason: "Scan your finger print to authenticate",
+        useErrorDialogs: true,
+        stickyAuth: true,
+      );
     } on PlatformException catch (e) {
-      print(e);
+      return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Log In Error'),
+          content: Text(
+            'Account not found please try again',
+            style: TextStyle(fontSize: 20.0, color: Colors.red),
+          ),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: Text('OK'))
+          ],
+        ),
+      );
     }
     if (!mounted) return;
 
@@ -84,6 +99,15 @@ class _LoginPageState extends State<LoginPage> {
       autherized =
           authenticated ? "Autherized success" : "Failed to authenticate";
     });
+
+    print('wwwwwwwww : ' + authenticated.toString());
+    if (authenticated) {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Menu()));
+      print('wassim wassim true........ ');
+    } else {
+      print('wassim wassim false........ ');
+    }
   }
 
   @override
@@ -289,32 +313,47 @@ class _LoginPageState extends State<LoginPage> {
                                       await SharedPreferences.getInstance();
                                   prefs.setString('id', _user.user.id);
 
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => Menu()));
+                                  return showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("ID Wallet : \n"),
+                                          content: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 16.0),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Text(
+                                                    'Or',
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            'Montserrat',
+                                                        fontSize: 20.0),
+                                                  ),
+                                                  IconButton(
+                                                    icon:
+                                                        Icon(Icons.fingerprint),
+                                                    onPressed: _authenticate,
+                                                    iconSize: 50.0,
+                                                  ),
+                                                ],
+                                              )),
+                                          actions: [
+                                            FlatButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text("Close")),
+                                          ],
+                                          backgroundColor: Color(0xff001a33),
+                                        );
+                                      });
                                 } else {
                                   return;
                                 }
                               },
                             ),
                           ),
-                          Container(
-                              padding: EdgeInsets.symmetric(vertical: 16.0),
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    'Or',
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20.0),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.fingerprint),
-                                    onPressed: _authenticate,
-                                    iconSize: 50.0,
-                                  ),
-                                ],
-                              ))
                         ],
                       ),
                     ))
