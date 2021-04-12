@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
@@ -31,6 +32,66 @@ class _LoginPageState extends State<LoginPage> {
   UserModel _user;
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
+
+// FingerPrint
+
+  LocalAuthentication auth = LocalAuthentication();
+  bool _canCheckBiometric;
+  List<BiometricType> _availableBiometric;
+  String autherized = "Not autherized";
+
+  Future<void> _checkBiometric() async {
+    bool canCheckBiometric;
+    try {
+      canCheckBiometric = await auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _canCheckBiometric = canCheckBiometric;
+    });
+  }
+
+  Future<void> _getAvailableBiometrics() async {
+    List<BiometricType> availableBiometric;
+    try {
+      availableBiometric = await auth.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _availableBiometric = availableBiometric;
+    });
+  }
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+    try {
+      authenticated = await auth.authenticateWithBiometrics(
+          localizedReason: "Scan your finger print to authenticate",
+          useErrorDialogs: true,
+          stickyAuth: false);
+    } on PlatformException catch (e) {
+      print(e);
+    }
+    if (!mounted) return;
+
+    setState(() {
+      autherized =
+          authenticated ? "Autherized success" : "Failed to authenticate";
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _checkBiometric();
+    _getAvailableBiometrics();
+  }
 
   Future<UserModel> loginUser(String email, String password) async {
     final String apiUrl = "https://tuncoin.herokuapp.com/login";
@@ -249,7 +310,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.fingerprint),
-                                    onPressed: () {},
+                                    onPressed: _authenticate,
                                     iconSize: 50.0,
                                   ),
                                 ],
