@@ -74,7 +74,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 20),
                 Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
@@ -125,7 +125,7 @@ class _SignupPageState extends State<SignupPage> {
                                 fontSize: 12,
                                 color: Colors.blue[100]),
                           ),
-                          Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
+                          Padding(padding: EdgeInsets.symmetric(vertical: 3.0)),
                           Form(
                             key: _formkey,
                             child: Column(
@@ -290,9 +290,21 @@ class _SignupPageState extends State<SignupPage> {
                               },
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                          )
+                            child: FlatButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginPage()));
+                                },
+                                child: Text(
+                                  "New Account TunCoin",
+                                  style: TextStyle(color: Colors.grey),
+                                )),
+                          ),
                         ],
                       ),
                     ))

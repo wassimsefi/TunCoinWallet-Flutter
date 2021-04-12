@@ -1,6 +1,9 @@
 import 'package:TunCoinWallet/Model/user_model.dart';
 import 'package:TunCoinWallet/pages/home.dart';
 import 'package:TunCoinWallet/pages/menu.dart';
+import 'package:TunCoinWallet/pages/forget_password.dart';
+import 'package:TunCoinWallet/pages/sign_up.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -224,7 +227,8 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.all(20.0),
+                                  padding: EdgeInsets.only(
+                                      left: 20.0, right: 20.0, top: 20.0),
                                   child: TextFormField(
                                     controller: _password,
                                     decoration: InputDecoration(
@@ -257,6 +261,41 @@ class _LoginPageState extends State<LoginPage> {
 
                                       return null;
                                     },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgetPasswordPage()));
+                                  },
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: " Forget Password ",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white),
+                                        ),
+                                        WidgetSpan(
+                                          child: Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            size: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -353,6 +392,21 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               },
                             ),
+                          ),
+                          Container(
+                            child: FlatButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) => SignupPage()));
+                                },
+                                child: Text(
+                                  "New Account TunCoin",
+                                  style: TextStyle(color: Colors.grey),
+                                )),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                         ],
                       ),
