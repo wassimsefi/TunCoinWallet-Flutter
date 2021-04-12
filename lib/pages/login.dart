@@ -356,27 +356,17 @@ class _LoginPageState extends State<LoginPage> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Text("ID Wallet : \n"),
+                                          title: Text(
+                                              " Fingerprint Authentication : "),
                                           content: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 16.0),
-                                              child: Column(
-                                                children: <Widget>[
-                                                  Text(
-                                                    'Or',
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            'Montserrat',
-                                                        fontSize: 20.0),
-                                                  ),
-                                                  IconButton(
-                                                    icon:
-                                                        Icon(Icons.fingerprint),
-                                                    onPressed: _authenticate,
-                                                    iconSize: 50.0,
-                                                  ),
-                                                ],
-                                              )),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 16.0),
+                                            child: IconButton(
+                                              icon: Icon(Icons.fingerprint),
+                                              onPressed: _authenticate,
+                                              iconSize: 70.0,
+                                            ),
+                                          ),
                                           actions: [
                                             FlatButton(
                                                 onPressed: () {
