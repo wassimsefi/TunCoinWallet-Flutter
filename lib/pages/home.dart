@@ -20,7 +20,9 @@ class Homepage extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
   String id = "";
   User _user;
 
@@ -55,15 +57,35 @@ class _HomepageState extends State<Homepage> {
     return userFromJson(responseString);
   }
 
+  List<Transaction> buyingList = new List();
+  List<Transaction> sendingList = new List();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getId();
+    _tabController = new TabController(vsync: this, length: 3);
+
+    print('hello');
   }
 
   @override
   Widget build(BuildContext context) {
+    print('transaction length ' + (_user.transaction.length).toString());
+    print(transactionToJson(_user.transaction[1]));
+    for (var i = 0; i < _user.transaction.length; i++) {
+      if (_user.transaction[i].typeTransaction == "Buying") {
+        print("yes \i");
+        print(transactionToJson(_user.transaction[i]));
+        buyingList.add(_user.transaction[i]);
+      } else {
+        print("no \i");
+
+        sendingList.add(_user.transaction[i]);
+      }
+    }
+
+    print(transactionToJson(sendingList[3]));
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
@@ -341,233 +363,470 @@ class _HomepageState extends State<Homepage> {
                             SizedBox(
                               height: 24,
                             ),
-
-                            //Container for buttons
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 32),
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      "All",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                          color: Colors.grey[900]),
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.grey[200],
-                                              blurRadius: 10.0,
-                                              spreadRadius: 4.5)
-                                        ]),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                  ),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        CircleAvatar(
-                                          radius: 8,
-                                          backgroundColor: Colors.green,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          "Income",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                              color: Colors.grey[900]),
-                                        ),
-                                      ],
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.grey[200],
-                                              blurRadius: 10.0,
-                                              spreadRadius: 4.5)
-                                        ]),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                  ),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        CircleAvatar(
-                                          radius: 8,
-                                          backgroundColor: Colors.orange,
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          "Expenses",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                              color: Colors.grey[900]),
-                                        ),
-                                      ],
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.grey[200],
-                                              blurRadius: 10.0,
-                                              spreadRadius: 4.5)
-                                        ]),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            SizedBox(
-                              height: 16,
-                            ),
-                            //Container Listview for expenses and incomes
-                            Container(
-                              child: Text(
-                                "TODAY",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.grey[500]),
-                              ),
-                              padding: EdgeInsets.symmetric(horizontal: 32),
-                            ),
-
-                            SizedBox(
-                              height: 16,
-                            ),
-
-                            ListView.builder(
+                            ListView(
                               shrinkWrap: true,
-                              itemCount: _user.transaction.length,
-                              padding: EdgeInsets.all(0),
-                              controller:
-                                  ScrollController(keepScrollOffset: false),
-                              itemBuilder: (context, index) {
-                                // if (_user.transaction.length == 0) {
-                                //   print("nullll !!!!!!!!!");
-                                //   return Center(
-                                //     child: Text(
-                                //       "Null !!!!!!",
-                                //       style: TextStyle(
-                                //           fontSize: 15,
-                                //           fontWeight: FontWeight.w700,
-                                //           color: Colors.grey[500]),
-                                //     ),
-                                //   );
-                                // }
-
-                                Transaction _transaction =
-                                    _user.transaction[index];
-
-                                return Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 10),
-                                  padding: EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[100],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(18))),
-                                        child: Icon(
-                                          _transaction.typeTransaction ==
-                                                  "Buying"
-                                              ? Icons.send_rounded
-                                              : Icons.get_app_rounded,
-                                          color: Colors.lightBlue[900],
-                                        ),
-                                        padding: EdgeInsets.all(12),
-                                      ),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              _transaction.typeTransaction,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.grey[900]),
-                                            ),
-                                            Text(
-                                              "Payment from Saad",
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.grey[500]),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          Text(
-                                            _transaction.amount.toString() +
-                                                " TNC",
+                              padding: EdgeInsets.only(left: 10.0, right: 0.0),
+                              children: <Widget>[
+                                SizedBox(height: 15.0),
+                                TabBar(
+                                    controller: _tabController,
+                                    indicatorColor: Colors.amber,
+                                    labelColor: Color(0xFFC88D67),
+                                    isScrollable: true,
+                                    labelPadding:
+                                        EdgeInsets.only(right: 30.0, left: 30),
+                                    unselectedLabelColor: Color(0xFFCDCDCD),
+                                    tabs: [
+                                      Tab(
+                                        child: Text('All',
                                             style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: _transaction
-                                                            .typeTransaction ==
-                                                        "Buying"
-                                                    ? Colors.lightGreen
-                                                    : Colors.orange),
-                                          ),
-                                          Text(
-                                            _transaction.date.day.toString() +
-                                                "/" +
-                                                _transaction.date.month
-                                                    .toString(),
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.grey[500]),
-                                          ),
-                                        ],
+                                              fontFamily: 'Varela',
+                                              fontSize: 21.0,
+                                            )),
                                       ),
-                                    ],
-                                  ),
-                                );
-                              },
+                                      Tab(
+                                        child: Text('Buying',
+                                            style: TextStyle(
+                                              fontFamily: 'Varela',
+                                              fontSize: 21.0,
+                                            )),
+                                      ),
+                                      Tab(
+                                        child: Text('Sending',
+                                            style: TextStyle(
+                                              fontFamily: 'Varela',
+                                              fontSize: 21.0,
+                                            )),
+                                      )
+                                    ]),
+                                Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.75,
+                                    width: double.infinity,
+                                    child: TabBarView(
+                                        controller: _tabController,
+                                        children: [
+                                          Container(
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  _user.transaction.length,
+                                              padding: EdgeInsets.all(0),
+                                              controller: ScrollController(
+                                                  keepScrollOffset: false),
+                                              itemBuilder: (context, index) {
+                                                // if (_user.transaction.length == 0) {
+                                                //   print("nullll !!!!!!!!!");
+                                                //   return Center(
+                                                //     child: Text(
+                                                //       "Null !!!!!!",
+                                                //       style: TextStyle(
+                                                //           fontSize: 15,
+                                                //           fontWeight: FontWeight.w700,
+                                                //           color: Colors.grey[500]),
+                                                //     ),
+                                                //   );
+                                                // }
+
+                                                Transaction _transaction =
+                                                    _user.transaction[index];
+
+                                                return Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 32,
+                                                      vertical: 10),
+                                                  padding: EdgeInsets.all(16),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .grey[100],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            18))),
+                                                        child: Icon(
+                                                          _transaction.typeTransaction ==
+                                                                  "Buying"
+                                                              ? Icons
+                                                                  .send_rounded
+                                                              : Icons
+                                                                  .get_app_rounded,
+                                                          color: Colors
+                                                              .lightBlue[900],
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.all(12),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 16,
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              _transaction
+                                                                  .typeTransaction,
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      900]),
+                                                            ),
+                                                            Text(
+                                                              "Payment from Saad",
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      500]),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            _transaction.amount
+                                                                    .toString() +
+                                                                " TNC",
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: _transaction.typeTransaction ==
+                                                                        "Buying"
+                                                                    ? Colors
+                                                                        .lightGreen
+                                                                    : Colors
+                                                                        .orange),
+                                                          ),
+                                                          Text(
+                                                            _transaction
+                                                                    .date.day
+                                                                    .toString() +
+                                                                "/" +
+                                                                _transaction
+                                                                    .date.month
+                                                                    .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: Colors
+                                                                    .grey[500]),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          Container(
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: buyingList.length,
+                                              padding: EdgeInsets.all(0),
+                                              controller: ScrollController(
+                                                  keepScrollOffset: false),
+                                              itemBuilder: (context, index) {
+                                                // if (_user.transaction.length == 0) {
+                                                //   print("nullll !!!!!!!!!");
+                                                //   return Center(
+                                                //     child: Text(
+                                                //       "Null !!!!!!",
+                                                //       style: TextStyle(
+                                                //           fontSize: 15,
+                                                //           fontWeight: FontWeight.w700,
+                                                //           color: Colors.grey[500]),
+                                                //     ),
+                                                //   );
+                                                // }
+
+                                                Transaction _transaction =
+                                                    buyingList[index];
+
+                                                return Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 32,
+                                                      vertical: 10),
+                                                  padding: EdgeInsets.all(16),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .grey[100],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            18))),
+                                                        child: Icon(
+                                                          _transaction.typeTransaction ==
+                                                                  "Buying"
+                                                              ? Icons
+                                                                  .send_rounded
+                                                              : Icons
+                                                                  .get_app_rounded,
+                                                          color: Colors
+                                                              .lightBlue[900],
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.all(12),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 16,
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              _transaction
+                                                                  .typeTransaction,
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      900]),
+                                                            ),
+                                                            Text(
+                                                              "Payment from Saad",
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      500]),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            _transaction.amount
+                                                                    .toString() +
+                                                                " TNC",
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: _transaction.typeTransaction ==
+                                                                        "Buying"
+                                                                    ? Colors
+                                                                        .lightGreen
+                                                                    : Colors
+                                                                        .orange),
+                                                          ),
+                                                          Text(
+                                                            _transaction
+                                                                    .date.day
+                                                                    .toString() +
+                                                                "/" +
+                                                                _transaction
+                                                                    .date.month
+                                                                    .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: Colors
+                                                                    .grey[500]),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          Container(
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: sendingList.length,
+                                              padding: EdgeInsets.all(0),
+                                              controller: ScrollController(
+                                                  keepScrollOffset: false),
+                                              itemBuilder: (context, index) {
+                                                // if (_user.transaction.length == 0) {
+                                                //   print("nullll !!!!!!!!!");
+                                                //   return Center(
+                                                //     child: Text(
+                                                //       "Null !!!!!!",
+                                                //       style: TextStyle(
+                                                //           fontSize: 15,
+                                                //           fontWeight: FontWeight.w700,
+                                                //           color: Colors.grey[500]),
+                                                //     ),
+                                                //   );
+                                                // }
+
+                                                Transaction _transaction =
+                                                    sendingList[index];
+
+                                                return Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 32,
+                                                      vertical: 10),
+                                                  padding: EdgeInsets.all(16),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .grey[100],
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            18))),
+                                                        child: Icon(
+                                                          _transaction.typeTransaction ==
+                                                                  "Buying"
+                                                              ? Icons
+                                                                  .send_rounded
+                                                              : Icons
+                                                                  .get_app_rounded,
+                                                          color: Colors
+                                                              .lightBlue[900],
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.all(12),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 16,
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              _transaction
+                                                                  .typeTransaction,
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      900]),
+                                                            ),
+                                                            Text(
+                                                              "Payment from Saad",
+                                                              style: TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                          .grey[
+                                                                      500]),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            _transaction.amount
+                                                                    .toString() +
+                                                                " TNC",
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: _transaction.typeTransaction ==
+                                                                        "Buying"
+                                                                    ? Colors
+                                                                        .lightGreen
+                                                                    : Colors
+                                                                        .orange),
+                                                          ),
+                                                          Text(
+                                                            _transaction
+                                                                    .date.day
+                                                                    .toString() +
+                                                                "/" +
+                                                                _transaction
+                                                                    .date.month
+                                                                    .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: Colors
+                                                                    .grey[500]),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ]))
+                              ],
                             ),
-
-                            //now expense
                           ],
                         ),
                         controller: scrollController,

@@ -12,7 +12,7 @@ String userToJson(User data) => json.encode(data.toJson());
 
 Transaction transactionFromJson(String str) =>
     Transaction.fromJson(json.decode(str));
-String transactionToJson(User data) => json.encode(data.toJson());
+String transactionToJson(Transaction data) => json.encode(data.toJson());
 
 class UserModel {
   UserModel({
