@@ -480,6 +480,7 @@ class _HomepageState extends State<Homepage> {
                                 //     ),
                                 //   );
                                 // }
+
                                 Transaction _transaction =
                                     _user.transaction[index];
 
