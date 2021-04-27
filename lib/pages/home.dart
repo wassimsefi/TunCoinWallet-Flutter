@@ -57,8 +57,6 @@ class _HomepageState extends State<Homepage>
     return userFromJson(responseString);
   }
 
-  List<Transaction> buyingList = new List();
-  List<Transaction> sendingList = new List();
   @override
   void initState() {
     // TODO: implement initState
@@ -71,6 +69,8 @@ class _HomepageState extends State<Homepage>
 
   @override
   Widget build(BuildContext context) {
+    List<Transaction> buyingList = new List();
+    List<Transaction> sendingList = new List();
     print('transaction length ' + (_user.transaction.length).toString());
     print(transactionToJson(_user.transaction[1]));
     for (var i = 0; i < _user.transaction.length; i++) {
@@ -85,7 +85,10 @@ class _HomepageState extends State<Homepage>
       }
     }
 
-    print(transactionToJson(sendingList[3]));
+    print('transaction length T' + (_user.transaction.length).toString());
+    print('transaction length B ' + (buyingList.length).toString());
+    print('transaction length S' + (sendingList.length).toString());
+
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
@@ -335,7 +338,7 @@ class _HomepageState extends State<Homepage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(
-                              height: 24,
+                              height: 40,
                             ),
                             Container(
                               child: Row(
@@ -370,8 +373,13 @@ class _HomepageState extends State<Homepage>
                                 SizedBox(height: 15.0),
                                 TabBar(
                                     controller: _tabController,
-                                    indicatorColor: Colors.amber,
-                                    labelColor: Color(0xFFC88D67),
+                                    // indicatorColor: Color(0xff13f4ef),
+                                    // indicatorWeight: 6,
+                                    indicator: BoxDecoration(
+                                        color: Color(0xff13f4ef),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(40.0))),
+                                    labelColor: Color(0xff001a33),
                                     isScrollable: true,
                                     labelPadding:
                                         EdgeInsets.only(right: 30.0, left: 30),
