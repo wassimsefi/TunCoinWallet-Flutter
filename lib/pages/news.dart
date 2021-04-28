@@ -5,6 +5,7 @@ import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:TunCoinWallet/widgets/customListTile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -56,7 +57,7 @@ class _NewsPageState extends State<NewsPage> {
             icon: Icon(Icons.article_outlined),
             color: Color(0xff001a33),
             onPressed: () {
-              print("wessssssssssss....");
+              print("object");
             },
           ),
         ],

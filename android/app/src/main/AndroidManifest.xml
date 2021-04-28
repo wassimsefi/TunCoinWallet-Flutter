@@ -6,6 +6,9 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
  <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+ <uses-permission android:name="android.permission.VIBRATE" />
+ <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="TunCoinWallet"
@@ -33,6 +36,7 @@
             <meta-data
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
+             
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -104,7 +104,7 @@ class _SatisticalPageState extends State<SatisticalPage> {
     {
       "text": "We show the easy way to shop. \nJust stay at home with us",
       "type": "Send",
-      "price": "142"
+      "price": "17840"
     },
   ];
 
@@ -508,17 +508,29 @@ class LineReportChartBalance extends StatelessWidget {
   List<FlSpot> getSports() {
     return [
       FlSpot(0, 0),
-      FlSpot(1, .5),
-      FlSpot(2, 1.5),
-      FlSpot(3, 1.5),
-      FlSpot(4, 1.7),
-      FlSpot(5, 2),
-      FlSpot(6, 1.5),
-      FlSpot(7, 1.7),
-      FlSpot(8, .1),
-      FlSpot(9, 2.8),
-      FlSpot(10, 2.5),
-      FlSpot(11, 2.4),
+      FlSpot(1, 1000),
+      FlSpot(2, 800),
+      FlSpot(3, 500),
+      FlSpot(4, 1500),
+      FlSpot(5, 3000),
+      FlSpot(6, 2000),
+      FlSpot(7, 1900),
+      FlSpot(8, 1800),
+      FlSpot(9, 1500),
+      FlSpot(10, 1000),
+      FlSpot(11, 600),
+      FlSpot(12, 610),
+      FlSpot(13, 660),
+      FlSpot(14, 1600),
+      FlSpot(15, 1900),
+      FlSpot(16, 2200),
+      FlSpot(17, 2000),
+      FlSpot(18, 1990),
+      FlSpot(19, 1970),
+      FlSpot(20, 1500),
+      FlSpot(21, 1600),
+      FlSpot(22, 1400),
+      FlSpot(23, 1130),
     ];
   }
 }

@@ -25,7 +25,8 @@ class _HomepageState extends State<Homepage>
   TabController _tabController;
   String id = "";
   User _user;
-
+  List<Transaction> buyingList = new List();
+  List<Transaction> sendingList = new List();
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,6 +38,24 @@ class _HomepageState extends State<Homepage>
     final User user = await getUser(id);
     setState(() {
       _user = user;
+
+      print('transaction length ' + (_user.transaction.length).toString());
+      print(transactionToJson(_user.transaction[1]));
+      for (var i = 0; i < _user.transaction.length; i++) {
+        if (_user.transaction[i].typeTransaction == "Buying") {
+          print("yes \i");
+          print(transactionToJson(_user.transaction[i]));
+          buyingList.add(_user.transaction[i]);
+        } else {
+          print("no \i");
+
+          sendingList.add(_user.transaction[i]);
+        }
+      }
+
+      print('transaction length T' + (_user.transaction.length).toString());
+      print('transaction length B ' + (buyingList.length).toString());
+      print('transaction length S' + (sendingList.length).toString());
     });
   }
 
@@ -69,26 +88,6 @@ class _HomepageState extends State<Homepage>
 
   @override
   Widget build(BuildContext context) {
-    List<Transaction> buyingList = new List();
-    List<Transaction> sendingList = new List();
-    print('transaction length ' + (_user.transaction.length).toString());
-    print(transactionToJson(_user.transaction[1]));
-    for (var i = 0; i < _user.transaction.length; i++) {
-      if (_user.transaction[i].typeTransaction == "Buying") {
-        print("yes \i");
-        print(transactionToJson(_user.transaction[i]));
-        buyingList.add(_user.transaction[i]);
-      } else {
-        print("no \i");
-
-        sendingList.add(_user.transaction[i]);
-      }
-    }
-
-    print('transaction length T' + (_user.transaction.length).toString());
-    print('transaction length B ' + (buyingList.length).toString());
-    print('transaction length S' + (sendingList.length).toString());
-
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
@@ -417,6 +416,7 @@ class _HomepageState extends State<Homepage>
                                           Container(
                                             child: ListView.builder(
                                               shrinkWrap: true,
+                                              // reverse: true,
                                               itemCount:
                                                   _user.transaction.length,
                                               padding: EdgeInsets.all(0),
@@ -557,6 +557,7 @@ class _HomepageState extends State<Homepage>
                                           Container(
                                             child: ListView.builder(
                                               shrinkWrap: true,
+                                              // reverse: true,
                                               itemCount: buyingList.length,
                                               padding: EdgeInsets.all(0),
                                               controller: ScrollController(
@@ -696,6 +697,7 @@ class _HomepageState extends State<Homepage>
                                           Container(
                                             child: ListView.builder(
                                               shrinkWrap: true,
+                                              //  reverse: true,
                                               itemCount: sendingList.length,
                                               padding: EdgeInsets.all(0),
                                               controller: ScrollController(

@@ -1,5 +1,7 @@
 import 'dart:ffi';
+import 'package:TunCoinWallet/widgets/generate.dart';
 import 'package:TunCoinWallet/widgets/line_chart.dart';
+import 'package:TunCoinWallet/widgets/line_chart2.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import 'package:flutter/material.dart';
@@ -124,7 +126,9 @@ class InfoCard extends StatelessWidget {
                         )),
                       ),
                       Expanded(
-                        child: LineReportChart(),
+                        child: title == "Buy"
+                            ? LineReportChart()
+                            : LineReportChart2(),
                       ),
                     ],
                   ),

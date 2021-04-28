@@ -24,70 +24,78 @@ class NewsdatailsPage extends StatelessWidget {
         backgroundColor: Color(0xff13f4ef),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 200.0,
-              width: double.infinity,
+              height: 250.0,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(article.urlToImage),
                   fit: BoxFit.cover,
                 ),
-                borderRadius: BorderRadius.circular(12.0),
+                // borderRadius: BorderRadius.circular(12.0),
               ),
             ),
             SizedBox(
               height: 8.0,
             ),
-            Container(
-              padding: EdgeInsets.all(9.0),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(30.0),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(9.0),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: InkWell(
+                        child: Text(article.source.name),
+                        onTap: () async {
+                          if (await canLaunch(article.url)) {
+                            await launch(article.url);
+                          } else
+                            // can't launch url, there is some error
+                            throw "Could not launch $article.url";
+                        }),
+                  ),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  Text(
+                    "Description : ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        color: Colors.white),
+                  ),
+                  Text(
+                    article.description,
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Text(
+                    "Content : ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                  Text(
+                    article.content,
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                ],
               ),
-              child: InkWell(
-                  child: Text(article.source.name),
-                  onTap: () async {
-                    if (await canLaunch(article.url)) {
-                      await launch(article.url);
-                    } else
-                      // can't launch url, there is some error
-                      throw "Could not launch $article.url";
-                  }),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Text(
-              "Description : ",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                  color: Colors.white),
-            ),
-            Text(
-              article.description,
-              style: TextStyle(fontSize: 16.0, color: Colors.white),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            Text(
-              "Content : ",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                  color: Colors.white),
-            ),
-            Text(
-              article.content,
-              style: TextStyle(fontSize: 16.0, color: Colors.white),
-            ),
-            SizedBox(
-              height: 8.0,
             ),
           ],
         ),

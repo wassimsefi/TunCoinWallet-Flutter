@@ -11,6 +11,7 @@ import 'package:TunCoinWallet/pages/statistical%20.dart';
 import 'package:flutter/material.dart';
 import 'package:TunCoinWallet/pages/menu.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -176,12 +177,32 @@ class _SendPageState extends State<SendPage> {
     }
   }
 
+  FlutterLocalNotificationsPlugin localNotification;
+
+  Future _showNotification(String amount) async {
+    var android = new AndroidNotificationDetails(
+        "channelID", "Local Notification ", "description",
+        importance: Importance.high);
+    var iOS = IOSNotificationDetails();
+    var platform = new NotificationDetails(android: android, iOS: iOS);
+    await localNotification.show(
+        0, 'Send TunCoin', 'Send TunCoin balonce - ' + amount, platform);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getId();
     getCryptocurrency();
+    var androidInitialize =
+        AndroidInitializationSettings("@mipmap/ic_launcher");
+    var iosInitialize = IOSInitializationSettings();
+    var initSetttings =
+        InitializationSettings(android: androidInitialize, iOS: iosInitialize);
+    localNotification = new FlutterLocalNotificationsPlugin();
+
+    localNotification.initialize(initSetttings);
   }
 
   @override
@@ -792,6 +813,7 @@ class _SendPageState extends State<SendPage> {
                                     print("buy!!!! : " + amount.toString());
 
                                     await SendAmount(id, amount, qrResult);
+                                    _showNotification(amount);
                                   } else {
                                     return;
                                   }
