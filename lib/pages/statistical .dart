@@ -56,37 +56,6 @@ class _SatisticalPageState extends State<SatisticalPage> {
     // TODO: implement initState
     super.initState();
     getId();
-
-    PieChartSectionData _item2 = PieChartSectionData(
-      color: Colors.amber,
-      value: 20,
-      title: 'bitCoin',
-      radius: 70,
-      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
-    );
-    PieChartSectionData _item3 = PieChartSectionData(
-      color: Colors.red,
-      value: 30,
-      title: 'Etherum',
-      radius: 70,
-      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
-    );
-    PieChartSectionData _item1 = PieChartSectionData(
-      color: Colors.blueAccent,
-      value: 40,
-      title: 'TunCoin',
-      radius: 50,
-      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
-    );
-    PieChartSectionData _item4 = PieChartSectionData(
-      color: Colors.deepPurple,
-      value: 10,
-      title: 'seCoin',
-      radius: 70,
-      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
-    );
-
-    _sections = [_item1, _item2, _item3, _item4];
   }
 
 //Pie chart
@@ -150,7 +119,7 @@ class _SatisticalPageState extends State<SatisticalPage> {
                             height: 9,
                           ),
                           Text(
-                            "BALONCE",
+                            "BALANCE",
                             style: TextStyle(
                               fontSize: 36,
                               color: Color(0xff13f4ef),
@@ -207,42 +176,87 @@ class _SatisticalPageState extends State<SatisticalPage> {
                         ],
                       ),
                     ),
-                    Expanded(
-                      flex: 6,
-                      child: PageView.builder(
-                        onPageChanged: (value) {
-                          setState(() {
-                            currentPage = value;
-                          });
-                        },
-                        itemCount: splashData.length,
-                        itemBuilder: (context, index) => SplashContent(
-                          type: splashData[index]["type"],
-                          text: splashData[index]['text'],
-                          price: splashData[index]['price'],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Column(
-                          children: <Widget>[
-                            Spacer(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(
-                                splashData.length,
-                                (index) => buildDot(index: index),
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        children: [
+                          Text(
+                            "TRANDACTIONS",
+                            style: TextStyle(
+                              fontSize: 36,
+                              color: Color(0xff13f4ef),
+                              fontWeight: FontWeight.bold,
                             ),
-                            Spacer(flex: 12),
-                            Spacer(),
-                          ],
-                        ),
+                          ),
+                          Wrap(
+                            children: <Widget>[
+                              Container(
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff001a33),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(30.0),
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: PieReportChart(
+                                            user: _user,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
                       ),
                     ),
+
+                    //   Expanded(
+                    //     flex: 6,
+                    //     child: PageView.builder(
+                    //       onPageChanged: (value) {
+                    //         setState(() {
+                    //           currentPage = value;
+                    //         });
+                    //       },
+                    //       itemCount: splashData.length,
+                    //       itemBuilder: (context, index) => SplashContent(
+                    //         type: splashData[index]["type"],
+                    //         text: splashData[index]['text'],
+                    //         price: splashData[index]['price'],
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   Expanded(
+                    //     flex: 1,
+                    //     child: Padding(
+                    //       padding: EdgeInsets.symmetric(horizontal: 10),
+                    //       child: Column(
+                    //         children: <Widget>[
+                    //           Spacer(),
+                    //           Row(
+                    //             mainAxisAlignment: MainAxisAlignment.center,
+                    //             children: List.generate(
+                    //               splashData.length,
+                    //               (index) => buildDot(index: index),
+                    //             ),
+                    //           ),
+                    //           Spacer(flex: 12),
+                    //           Spacer(),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
                   ],
                 ),
               ),
@@ -280,47 +294,6 @@ class _SatisticalPageState extends State<SatisticalPage> {
       // ),
 
       //new new
-
-      //   Padding(
-      //     padding: const EdgeInsets.symmetric(vertical: 20),
-      //     child: Column(
-      //       children: [
-      //         Text(
-      //           "Cryptocurrency :",
-      //           style: TextStyle(
-      //             fontWeight: FontWeight.bold,
-      //             fontSize: 20,
-      //           ),
-      //         ),
-      //         Wrap(
-      //           children: <Widget>[
-      //             Container(
-      //               height: 300,
-      //               decoration: BoxDecoration(
-      //                 color: Color(0xff001a33),
-      //                 borderRadius: BorderRadius.circular(8),
-      //               ),
-      //               child: Column(
-      //                 children: <Widget>[
-      //                   Padding(
-      //                     padding: const EdgeInsets.all(30.0),
-      //                   ),
-      //                   Row(
-      //                     crossAxisAlignment: CrossAxisAlignment.center,
-      //                     children: <Widget>[
-      //                       Expanded(
-      //                         child: PieReportChart(),
-      //                       ),
-      //                     ],
-      //                   )
-      //                 ],
-      //               ),
-      //             )
-      //           ],
-      //         ),
-      //       ],
-      //     ),
-      //   ),
     );
   }
 
@@ -422,7 +395,23 @@ class InfoCard extends StatelessWidget {
   }
 }
 
-class PieReportChart extends StatelessWidget {
+class PieReportChart extends StatefulWidget {
+  final User user;
+
+  const PieReportChart({Key key, this.user}) : super(key: key);
+  @override
+  _PieReportChartState createState() => _PieReportChartState();
+}
+
+class _PieReportChartState extends State<PieReportChart> {
+  User _user;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _user = widget.user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -442,36 +431,40 @@ class PieReportChart extends StatelessWidget {
   List<PieChartSectionData> getCoin() {
     List<PieChartSectionData> _sections = List<PieChartSectionData>();
 
+    int sValues = 0;
+    int bCalues = 0;
+    print('transaction length 04789 ' + (_user.transaction.length).toString());
+    print(transactionToJson(_user.transaction[1]));
+    for (var i = 0; i < _user.transaction.length; i++) {
+      if (_user.transaction[i].typeTransaction == "Buying") {
+        bCalues = bCalues + _user.transaction[i].amount;
+      } else {
+        sValues = sValues + _user.transaction[i].amount;
+      }
+    }
+
+    print('transaction length  222222 ' + (bCalues).toString());
     PieChartSectionData _item2 = PieChartSectionData(
-      color: Colors.amber,
-      value: 20,
-      title: 'bitCoin',
-      radius: 70,
-      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
-    );
-    PieChartSectionData _item3 = PieChartSectionData(
-      color: Colors.red,
-      value: 30,
-      title: 'Etherum',
-      radius: 70,
-      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
-    );
-    PieChartSectionData _item1 = PieChartSectionData(
-      color: Colors.blueAccent,
-      value: 40,
-      title: 'TunCoin',
-      radius: 50,
-      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
-    );
-    PieChartSectionData _item4 = PieChartSectionData(
-      color: Colors.deepPurple,
-      value: 10,
-      title: 'seCoin',
+      color: Colors.green,
+      value: bCalues.toDouble(),
+      title: 'Send',
       radius: 70,
       titleStyle: TextStyle(color: Colors.white, fontSize: 24),
     );
 
-    _sections = [_item1, _item2, _item3, _item4];
+    PieChartSectionData _item1 = PieChartSectionData(
+      color: Colors.orange,
+      value: sValues.toDouble(),
+      titlePositionPercentageOffset: 0.5,
+      title: 'Receive',
+      radius: 70,
+      titleStyle: TextStyle(color: Colors.white, fontSize: 24),
+    );
+
+    _sections = [
+      _item2,
+      _item1,
+    ];
 
     return _sections;
   }

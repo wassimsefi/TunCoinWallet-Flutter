@@ -272,7 +272,7 @@ class _BuyPageState extends State<BuyPage> {
                                     "News",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -318,7 +318,7 @@ class _BuyPageState extends State<BuyPage> {
                                     "Crypto",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -353,7 +353,7 @@ class _BuyPageState extends State<BuyPage> {
                                     "Statistical",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -375,7 +375,7 @@ class _BuyPageState extends State<BuyPage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(18))),
                                     child: Icon(
-                                      Icons.logout,
+                                      Icons.notification_important,
                                       color: Colors.blue[900],
                                       size: 30,
                                     ),
@@ -385,17 +385,17 @@ class _BuyPageState extends State<BuyPage> {
                                     height: 4,
                                   ),
                                   Text(
-                                    "LogOut",
+                                    "Notification",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
                               ),
                             ),
                             onTap: () {
-                              logOut();
+                              //logOut();
                             },
                           ),
                         ],

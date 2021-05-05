@@ -276,7 +276,7 @@ class _ReceivePageState extends State<ReceivePage> {
                                     "News",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -322,7 +322,7 @@ class _ReceivePageState extends State<ReceivePage> {
                                     "Crypto",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -357,7 +357,7 @@ class _ReceivePageState extends State<ReceivePage> {
                                     "Statistical",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -379,7 +379,7 @@ class _ReceivePageState extends State<ReceivePage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(18))),
                                     child: Icon(
-                                      Icons.logout,
+                                      Icons.notification_important,
                                       color: Colors.blue[900],
                                       size: 30,
                                     ),
@@ -389,17 +389,17 @@ class _ReceivePageState extends State<ReceivePage> {
                                     height: 4,
                                   ),
                                   Text(
-                                    "LogOut",
+                                    "Notification",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
                               ),
                             ),
                             onTap: () {
-                              logOut();
+                              //logOut();
                             },
                           ),
                         ],

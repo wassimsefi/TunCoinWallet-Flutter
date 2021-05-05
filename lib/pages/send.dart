@@ -323,7 +323,7 @@ class _SendPageState extends State<SendPage> {
                                     "News",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -369,7 +369,7 @@ class _SendPageState extends State<SendPage> {
                                     "Crypto",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -404,7 +404,7 @@ class _SendPageState extends State<SendPage> {
                                     "Statistical",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -426,7 +426,7 @@ class _SendPageState extends State<SendPage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(18))),
                                     child: Icon(
-                                      Icons.logout,
+                                      Icons.notification_important,
                                       color: Colors.blue[900],
                                       size: 30,
                                     ),
@@ -436,17 +436,17 @@ class _SendPageState extends State<SendPage> {
                                     height: 4,
                                   ),
                                   Text(
-                                    "LogOut",
+                                    "Notification",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
                               ),
                             ),
                             onTap: () {
-                              logOut();
+                              //logOut();
                             },
                           ),
                         ],

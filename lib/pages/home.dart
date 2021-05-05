@@ -183,7 +183,7 @@ class _HomepageState extends State<Homepage>
                                     "News",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -229,7 +229,7 @@ class _HomepageState extends State<Homepage>
                                     "Crypto",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -264,7 +264,7 @@ class _HomepageState extends State<Homepage>
                                     "Statistical",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
@@ -286,7 +286,7 @@ class _HomepageState extends State<Homepage>
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(18))),
                                     child: Icon(
-                                      Icons.logout,
+                                      Icons.notification_important,
                                       color: Colors.blue[900],
                                       size: 30,
                                     ),
@@ -296,17 +296,17 @@ class _HomepageState extends State<Homepage>
                                     height: 4,
                                   ),
                                   Text(
-                                    "LogOut",
+                                    "Notification",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: Colors.blue[100]),
                                   ),
                                 ],
                               ),
                             ),
                             onTap: () {
-                              logOut();
+                              //logOut();
                             },
                           ),
                         ],
@@ -372,16 +372,16 @@ class _HomepageState extends State<Homepage>
                                 SizedBox(height: 15.0),
                                 TabBar(
                                     controller: _tabController,
-                                    // indicatorColor: Color(0xff13f4ef),
-                                    // indicatorWeight: 6,
-                                    indicator: BoxDecoration(
-                                        color: Color(0xff13f4ef),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(40.0))),
+                                    indicatorColor: Color(0xff13f4ef),
+                                    indicatorWeight: 6,
+                                    // indicator: BoxDecoration(
+                                    //     color: Color(0xff13f4ef),
+                                    //     borderRadius: BorderRadius.all(
+                                    //         Radius.circular(40.0))),
                                     labelColor: Color(0xff001a33),
                                     isScrollable: true,
-                                    labelPadding:
-                                        EdgeInsets.only(right: 30.0, left: 30),
+                                    labelPadding: EdgeInsets.only(
+                                        right: 40.0, left: 40.0),
                                     unselectedLabelColor: Color(0xFFCDCDCD),
                                     tabs: [
                                       Tab(
@@ -392,14 +392,14 @@ class _HomepageState extends State<Homepage>
                                             )),
                                       ),
                                       Tab(
-                                        child: Text('Buying',
+                                        child: Text('Receive',
                                             style: TextStyle(
                                               fontFamily: 'Varela',
                                               fontSize: 21.0,
                                             )),
                                       ),
                                       Tab(
-                                        child: Text('Sending',
+                                        child: Text('Send',
                                             style: TextStyle(
                                               fontFamily: 'Varela',
                                               fontSize: 21.0,
@@ -454,8 +454,13 @@ class _HomepageState extends State<Homepage>
                                                     children: <Widget>[
                                                       Container(
                                                         decoration: BoxDecoration(
-                                                            color: Colors
-                                                                .grey[100],
+                                                            color: _transaction
+                                                                        .typeTransaction ==
+                                                                    "Buying"
+                                                                ? Colors.lightGreen[
+                                                                    100]
+                                                                : Colors.orange[
+                                                                    100],
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .all(Radius
@@ -465,11 +470,14 @@ class _HomepageState extends State<Homepage>
                                                           _transaction.typeTransaction ==
                                                                   "Buying"
                                                               ? Icons
-                                                                  .send_rounded
+                                                                  .call_received_rounded
                                                               : Icons
-                                                                  .get_app_rounded,
-                                                          color: Colors
-                                                              .lightBlue[900],
+                                                                  .call_made_rounded,
+                                                          color: _transaction
+                                                                      .typeTransaction ==
+                                                                  "Buying"
+                                                              ? Colors.green
+                                                              : Colors.orange,
                                                         ),
                                                         padding:
                                                             EdgeInsets.all(12),
@@ -594,8 +602,13 @@ class _HomepageState extends State<Homepage>
                                                     children: <Widget>[
                                                       Container(
                                                         decoration: BoxDecoration(
-                                                            color: Colors
-                                                                .grey[100],
+                                                            color: _transaction
+                                                                        .typeTransaction ==
+                                                                    "Buying"
+                                                                ? Colors.lightGreen[
+                                                                    100]
+                                                                : Colors.orange[
+                                                                    100],
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .all(Radius
@@ -605,11 +618,14 @@ class _HomepageState extends State<Homepage>
                                                           _transaction.typeTransaction ==
                                                                   "Buying"
                                                               ? Icons
-                                                                  .send_rounded
+                                                                  .call_received_rounded
                                                               : Icons
-                                                                  .get_app_rounded,
-                                                          color: Colors
-                                                              .lightBlue[900],
+                                                                  .call_made_rounded,
+                                                          color: _transaction
+                                                                      .typeTransaction ==
+                                                                  "Buying"
+                                                              ? Colors.green
+                                                              : Colors.orange,
                                                         ),
                                                         padding:
                                                             EdgeInsets.all(12),
@@ -697,7 +713,7 @@ class _HomepageState extends State<Homepage>
                                           Container(
                                             child: ListView.builder(
                                               shrinkWrap: true,
-                                              //  reverse: true,
+                                              reverse: true,
                                               itemCount: sendingList.length,
                                               padding: EdgeInsets.all(0),
                                               controller: ScrollController(
@@ -734,8 +750,13 @@ class _HomepageState extends State<Homepage>
                                                     children: <Widget>[
                                                       Container(
                                                         decoration: BoxDecoration(
-                                                            color: Colors
-                                                                .grey[100],
+                                                            color: _transaction
+                                                                        .typeTransaction ==
+                                                                    "Buying"
+                                                                ? Colors.lightGreen[
+                                                                    100]
+                                                                : Colors.orange[
+                                                                    100],
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .all(Radius
@@ -745,11 +766,14 @@ class _HomepageState extends State<Homepage>
                                                           _transaction.typeTransaction ==
                                                                   "Buying"
                                                               ? Icons
-                                                                  .send_rounded
+                                                                  .call_received_rounded
                                                               : Icons
-                                                                  .get_app_rounded,
-                                                          color: Colors
-                                                              .lightBlue[900],
+                                                                  .call_made_rounded,
+                                                          color: _transaction
+                                                                      .typeTransaction ==
+                                                                  "Buying"
+                                                              ? Colors.green
+                                                              : Colors.orange,
                                                         ),
                                                         padding:
                                                             EdgeInsets.all(12),
