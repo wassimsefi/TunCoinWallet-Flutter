@@ -115,26 +115,9 @@ class _HomepageState extends State<Homepage>
                           Container(
                             child: Row(
                               children: <Widget>[
-                                InkWell(
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.notifications,
-                                      color: Colors.lightBlue[100],
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                NotificationPage()));
-                                  },
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
                                 CircleAvatar(
                                   radius: 25,
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Color(0xff001a33),
                                   child: ClipOval(
                                     child: Image.asset(
                                       'assets/logo2.png',
@@ -337,33 +320,19 @@ class _HomepageState extends State<Homepage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(
-                              height: 40,
+                              height: 20,
                             ),
-                            Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Recent Transactions",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 24,
-                                        color: Colors.black),
-                                  ),
-                                  Text(
-                                    "See all",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                        color: Colors.grey[800]),
-                                  )
-                                ],
+                            Center(
+                              child: Text(
+                                "Recent Transactions",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 24,
+                                    color: Colors.black),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 32),
                             ),
                             SizedBox(
-                              height: 24,
+                              height: 10,
                             ),
                             ListView(
                               shrinkWrap: true,
@@ -419,7 +388,7 @@ class _HomepageState extends State<Homepage>
                                               // reverse: true,
                                               itemCount:
                                                   _user.transaction.length,
-                                              padding: EdgeInsets.all(0),
+                                              padding: EdgeInsets.only(top: 0),
                                               controller: ScrollController(
                                                   keepScrollOffset: false),
                                               itemBuilder: (context, index) {
@@ -713,7 +682,7 @@ class _HomepageState extends State<Homepage>
                                           Container(
                                             child: ListView.builder(
                                               shrinkWrap: true,
-                                              reverse: true,
+                                              reverse: false,
                                               itemCount: sendingList.length,
                                               padding: EdgeInsets.all(0),
                                               controller: ScrollController(

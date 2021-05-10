@@ -46,21 +46,12 @@ class _NewsPageState extends State<NewsPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xff001a33),
+            color: Colors.white,
           ),
           onPressed: () => Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (context) => Menu())),
         ),
-        backgroundColor: Color(0xff13f4ef),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.article_outlined),
-            color: Color(0xff001a33),
-            onPressed: () {
-              print("object");
-            },
-          ),
-        ],
+        backgroundColor: Color(0xff001a33),
       ),
       body: FutureBuilder(
         future: getArticle(),

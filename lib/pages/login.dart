@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
                     child: Card(
-                      color: Color(0xff113768),
+                      color: Color(0xff2B445C),
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(50.0))),
@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text(
                               'Welcome Back!',
                               style: TextStyle(
-                                  color: Color(0xff13f4ef),
+                                  color: Colors.white,
                                   fontSize: 24.0,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Montserrat'),
@@ -303,21 +303,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
                           Container(
-                            width: 150.0,
+                            width: (MediaQuery.of(context).size.width) - 80,
                             height: 43.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50.0),
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                stops: [0.1, 0.9],
-                                colors: [
-                                  Color(0xff1d83ab),
-                                  //Color.fromRGBO(19, 244, 239, 1),
-                                  Color(0xff13f4ef),
-                                ],
-                              ),
-                            ),
                             child: FlatButton(
                               child: Text(
                                 'Sign In',
@@ -327,10 +314,13 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              textColor: Colors.white,
-                              color: Colors.transparent,
+                              color: Color(0xff001a33),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
+                                  side: BorderSide(
+                                      color: Color(0xff001a33),
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(30)),
                               onPressed: () async {
                                 if (_formkey.currentState.validate()) {
                                   print("hello ");

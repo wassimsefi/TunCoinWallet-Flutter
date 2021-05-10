@@ -208,26 +208,12 @@ class _ReceivePageState extends State<ReceivePage> {
                           Container(
                             child: Row(
                               children: <Widget>[
-                                InkWell(
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.notifications,
-                                      color: Colors.lightBlue[100],
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                NotificationPage()));
-                                  },
-                                ),
                                 SizedBox(
                                   width: 16,
                                 ),
                                 CircleAvatar(
                                   radius: 25,
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Color(0xff001a33),
                                   child: ClipOval(
                                     child: Image.asset(
                                       'assets/logo2.png',

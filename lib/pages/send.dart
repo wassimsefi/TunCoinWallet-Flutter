@@ -255,26 +255,12 @@ class _SendPageState extends State<SendPage> {
                           Container(
                             child: Row(
                               children: <Widget>[
-                                InkWell(
-                                  child: Container(
-                                    child: Icon(
-                                      Icons.notifications,
-                                      color: Colors.lightBlue[100],
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                NotificationPage()));
-                                  },
-                                ),
                                 SizedBox(
                                   width: 16,
                                 ),
                                 CircleAvatar(
                                   radius: 25,
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Color(0xff001a33),
                                   child: ClipOval(
                                     child: Image.asset(
                                       'assets/logo2.png',
@@ -637,6 +623,8 @@ class _SendPageState extends State<SendPage> {
                             Form(
                               key: _formkey,
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Row(
                                     children: [
@@ -771,23 +759,14 @@ class _SendPageState extends State<SendPage> {
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0)),
                             Container(
-                              width: 350.0,
+                              width: MediaQuery.of(context).size.width,
                               height: 43.0,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.bottomLeft,
-                                  stops: [0.1, 0.9],
-                                  colors: [
-                                    Color(0xff1d83ab),
-                                    //Color.fromRGBO(19, 244, 239, 1),
-                                    Color(0xff13f4ef),
-                                  ],
-                                ),
-                              ),
                               child: FlatButton(
                                 child: Text(
                                   'Send',
@@ -797,10 +776,13 @@ class _SendPageState extends State<SendPage> {
                                     fontSize: 24,
                                   ),
                                 ),
-                                //textColor: Colors.white,
-                                color: Colors.transparent,
+                                color: Color(0xff0069CC),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                    side: BorderSide(
+                                        color: Color(0xff0069CC),
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                    borderRadius: BorderRadius.circular(5)),
                                 onPressed: () async {
                                   if (_formkey.currentState.validate()) {
                                     print("hello ");

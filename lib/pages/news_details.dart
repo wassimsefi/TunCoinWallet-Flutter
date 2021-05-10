@@ -16,12 +16,12 @@ class NewsdatailsPage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xff001a33),
+            color: Colors.white,
           ),
           onPressed: () => Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => NewsPage())),
         ),
-        backgroundColor: Color(0xff13f4ef),
+        backgroundColor: Color(0xff001a33),
       ),
       body: Padding(
         padding: const EdgeInsets.all(0),

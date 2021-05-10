@@ -76,16 +76,8 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            Text(
-              "Settings",
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w500,
-                color: Color(0xff001a33),
-              ),
-            ),
             SizedBox(
-              height: 40,
+              height: 30,
             ),
             Row(
               children: [
@@ -163,12 +155,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: TextStyle(
                     fontSize: 16,
                     letterSpacing: 2.2,
-                    color: Color(0xff001a33),
+                    color: Colors.white,
                   )),
-              textColor: Color(0xff001a33),
+              color: Color(0xffF52F20),
               shape: RoundedRectangleBorder(
                   side: BorderSide(
-                      color: Color(0xff001a33),
+                      color: Color(0xffF52F20),
                       width: 1,
                       style: BorderStyle.solid),
                   borderRadius: BorderRadius.circular(50)),

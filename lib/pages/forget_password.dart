@@ -102,6 +102,16 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff001a33),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        backgroundColor: Color(0xff001a33),
+      ),
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Column(

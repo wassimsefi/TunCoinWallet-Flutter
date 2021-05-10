@@ -79,7 +79,7 @@ class _SignupPageState extends State<SignupPage> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
                     child: Card(
-                      color: Color(0xff113768),
+                      color: Color(0xff2B445C),
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(50.0))),
@@ -97,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                                   children: <Widget>[
                                     CircleAvatar(
                                       radius: 25,
-                                      backgroundColor: Colors.white,
+                                      backgroundColor: Color(0xff2B445C),
                                       child: ClipOval(
                                         child: Image.asset(
                                           'assets/logo2.png',
@@ -241,21 +241,8 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           Padding(padding: EdgeInsets.symmetric(vertical: 8.0)),
                           Container(
-                            width: 330.0,
+                            width: (MediaQuery.of(context).size.width) - 80,
                             height: 50.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50.0),
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                stops: [0.1, 0.9],
-                                colors: [
-                                  Color(0xff1d83ab),
-                                  //Color.fromRGBO(19, 244, 239, 1),
-                                  Color(0xff13f4ef),
-                                ],
-                              ),
-                            ),
                             child: FlatButton(
                               child: Text(
                                 'Create wallet',
@@ -265,10 +252,13 @@ class _SignupPageState extends State<SignupPage> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              textColor: Colors.white,
-                              color: Colors.transparent,
+                              color: Color(0xff001a33),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
+                                  side: BorderSide(
+                                      color: Color(0xff001a33),
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  borderRadius: BorderRadius.circular(30)),
                               onPressed: () async {
                                 if (_formkey.currentState.validate()) {
                                   print("hello ");
@@ -301,7 +291,7 @@ class _SignupPageState extends State<SignupPage> {
                                           builder: (context) => LoginPage()));
                                 },
                                 child: Text(
-                                  "New Account TunCoin",
+                                  " Login ",
                                   style: TextStyle(color: Colors.grey),
                                 )),
                           ),

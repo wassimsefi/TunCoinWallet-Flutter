@@ -13,6 +13,10 @@ class Accueilpage extends StatefulWidget {
 class _AccueilpageState extends State<Accueilpage> {
   @override
   Widget build(BuildContext context) {
+    double d = MediaQuery.of(context).size.height;
+
+    double w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Color(0xff001a33),
       body: new ListView(

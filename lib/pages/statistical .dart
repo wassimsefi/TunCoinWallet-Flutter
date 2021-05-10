@@ -87,21 +87,12 @@ class _SatisticalPageState extends State<SatisticalPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xff001a33),
+            color: Colors.white,
           ),
           onPressed: () => Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (context) => Menu())),
         ),
-        backgroundColor: Color(0xff13f4ef),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.trending_down),
-            color: Color(0xff001a33),
-            onPressed: () {
-              print("wessssssssssss....");
-            },
-          ),
-        ],
+        backgroundColor: Color(0xff001a33),
       ),
       body: FutureBuilder(
         future: getUser(id),

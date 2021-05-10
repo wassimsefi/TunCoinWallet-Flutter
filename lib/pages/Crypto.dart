@@ -93,21 +93,12 @@ class _CryptopageState extends State<Cryptopage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xff001a33),
+            color: Colors.white,
           ),
           onPressed: () => Navigator.of(context)
               .pushReplacement(MaterialPageRoute(builder: (context) => Menu())),
         ),
-        backgroundColor: Color(0xff13f4ef),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.article_outlined),
-            color: Color(0xff001a33),
-            onPressed: () {
-              print("wessssssssssss....");
-            },
-          ),
-        ],
+        backgroundColor: Color(0xff001a33),
       ),
 
       body: FutureBuilder(
@@ -121,35 +112,6 @@ class _CryptopageState extends State<Cryptopage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      height: 24,
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Cryptocurrency",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 24,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            "See all",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                                color: Colors.grey[800]),
-                          )
-                        ],
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 32),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-
-                    SizedBox(
                       height: 16,
                     ),
                     Container(
@@ -157,13 +119,13 @@ class _CryptopageState extends State<Cryptopage> {
                           EdgeInsets.symmetric(horizontal: 32, vertical: 10),
                       padding: EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Color(0xff2B445C),
                           borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Row(
                         children: <Widget>[
                           CircleAvatar(
                             radius: 25,
-                            backgroundColor: Colors.white,
+                            backgroundColor: Color(0xff2B445C),
                             child: ClipOval(
                               child: Image.asset(
                                 'assets/logo2.png',
@@ -259,14 +221,14 @@ class _CryptopageState extends State<Cryptopage> {
                               horizontal: 32, vertical: 10),
                           padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(0xff2B445C),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20))),
                           child: Row(
                             children: <Widget>[
                               CircleAvatar(
                                 radius: 25,
-                                backgroundColor: Colors.white,
+                                backgroundColor: Color(0xff2B445C),
                                 child: ClipOval(
                                   child: Image.asset(
                                     'assets/' + logoCrypto[index],
