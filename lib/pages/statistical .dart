@@ -94,170 +94,197 @@ class _SatisticalPageState extends State<SatisticalPage> {
         ),
         backgroundColor: Color(0xff001a33),
       ),
-      body: FutureBuilder(
-        future: getUser(id),
-        builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-              child: SizedBox(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 9,
-                          ),
-                          Text(
-                            "BALANCE",
-                            style: TextStyle(
-                              fontSize: 36,
-                              color: Color(0xff13f4ef),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            ' text text text text text text text text \n text text text text text text ',
-                            textAlign: TextAlign.center,
-                          ),
-                          Wrap(
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: RichText(
-                                              text: TextSpan(
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                            children: [
-                                              TextSpan(
-                                                text: _user.balance.toString() +
-                                                    "\n",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                              ),
-                                              TextSpan(
-                                                text: "TNC",
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    height: 2,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
-                                              ),
-                                            ],
-                                          )),
-                                        ),
-                                        Expanded(
-                                          child: LineReportChartBalance(),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+      body: _user.transaction.length == 0
+          ? new FutureBuilder(
+              future: getUser(id),
+              builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    child: new Center(
+                      child: Text(
+                        "no transaction !!!",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            )
+          : new FutureBuilder(
+              future: getUser(id),
+              builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                if (snapshot.hasData) {
+                  return SafeArea(
+                    child: SizedBox(
                       child: Column(
-                        children: [
-                          Text(
-                            "TRANDACTIONS",
-                            style: TextStyle(
-                              fontSize: 36,
-                              color: Color(0xff13f4ef),
-                              fontWeight: FontWeight.bold,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 0),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 9,
+                                ),
+                                Text(
+                                  "BALANCE",
+                                  style: TextStyle(
+                                    fontSize: 36,
+                                    color: Color(0xff13f4ef),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  ' text text text text text text text text \n text text text text text text ',
+                                  textAlign: TextAlign.center,
+                                ),
+                                Wrap(
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: RichText(
+                                                    text: TextSpan(
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                  children: [
+                                                    TextSpan(
+                                                      text: _user.balance
+                                                              .toString() +
+                                                          "\n",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    ),
+                                                    TextSpan(
+                                                      text: "TNC",
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          height: 2,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                              Expanded(
+                                                child: LineReportChartBalance(),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                          Wrap(
-                            children: <Widget>[
-                              Container(
-                                height: 300,
-                                decoration: BoxDecoration(
-                                  color: Color(0xff001a33),
-                                  borderRadius: BorderRadius.circular(8),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "TRANDACTIONS",
+                                  style: TextStyle(
+                                    fontSize: 36,
+                                    color: Color(0xff13f4ef),
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                child: Column(
+                                Wrap(
                                   children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(30.0),
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: PieReportChart(
-                                            user: _user,
+                                    Container(
+                                      height: 300,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xff001a33),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(30.0),
                                           ),
-                                        ),
-                                      ],
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: PieReportChart(
+                                                  user: _user,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
-                              )
-                            ],
+                              ],
+                            ),
                           ),
+
+                          //   Expanded(
+                          //     flex: 6,
+                          //     child: PageView.builder(
+                          //       onPageChanged: (value) {
+                          //         setState(() {
+                          //           currentPage = value;
+                          //         });
+                          //       },
+                          //       itemCount: splashData.length,
+                          //       itemBuilder: (context, index) => SplashContent(
+                          //         type: splashData[index]["type"],
+                          //         text: splashData[index]['text'],
+                          //         price: splashData[index]['price'],
+                          //       ),
+                          //     ),
+                          //   ),
+                          //   Expanded(
+                          //     flex: 1,
+                          //     child: Padding(
+                          //       padding: EdgeInsets.symmetric(horizontal: 10),
+                          //       child: Column(
+                          //         children: <Widget>[
+                          //           Spacer(),
+                          //           Row(
+                          //             mainAxisAlignment: MainAxisAlignment.center,
+                          //             children: List.generate(
+                          //               splashData.length,
+                          //               (index) => buildDot(index: index),
+                          //             ),
+                          //           ),
+                          //           Spacer(flex: 12),
+                          //           Spacer(),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
                         ],
                       ),
                     ),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
 
-                    //   Expanded(
-                    //     flex: 6,
-                    //     child: PageView.builder(
-                    //       onPageChanged: (value) {
-                    //         setState(() {
-                    //           currentPage = value;
-                    //         });
-                    //       },
-                    //       itemCount: splashData.length,
-                    //       itemBuilder: (context, index) => SplashContent(
-                    //         type: splashData[index]["type"],
-                    //         text: splashData[index]['text'],
-                    //         price: splashData[index]['price'],
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   Expanded(
-                    //     flex: 1,
-                    //     child: Padding(
-                    //       padding: EdgeInsets.symmetric(horizontal: 10),
-                    //       child: Column(
-                    //         children: <Widget>[
-                    //           Spacer(),
-                    //           Row(
-                    //             mainAxisAlignment: MainAxisAlignment.center,
-                    //             children: List.generate(
-                    //               splashData.length,
-                    //               (index) => buildDot(index: index),
-                    //             ),
-                    //           ),
-                    //           Spacer(flex: 12),
-                    //           Spacer(),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                  ],
-                ),
-              ),
-            );
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
       // Container(
       //   height: 160,
       //   width: double.infinity,

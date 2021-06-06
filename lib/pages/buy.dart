@@ -79,7 +79,7 @@ class _BuyPageState extends State<BuyPage> {
   }
 
   Future BuyAmount(String id, String amount) async {
-    final String apiUrl = "https://tuncoin.herokuapp.com/buy";
+    final String apiUrl = "https://tuncoin.herokuapp.com/pay";
     // double amount1 = double.parse(amount);
     final Response =
         await http.post(apiUrl, body: {"id": id, "amount": amount});
@@ -194,12 +194,23 @@ class _BuyPageState extends State<BuyPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            _user.balance.toString() + " TNC",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 36,
-                                fontWeight: FontWeight.w700),
+                          Row(
+                            children: [
+                              Text(
+                                _user.balance.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              Text(
+                                " TNC",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ],
                           ),
                           Container(
                             child: Row(

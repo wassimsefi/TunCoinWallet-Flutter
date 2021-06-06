@@ -245,12 +245,23 @@ class _SendPageState extends State<SendPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            _user.balance.toString() + " TNC",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 36,
-                                fontWeight: FontWeight.w700),
+                          Row(
+                            children: [
+                              Text(
+                                _user.balance.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              Text(
+                                " TNC",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ],
                           ),
                           Container(
                             child: Row(

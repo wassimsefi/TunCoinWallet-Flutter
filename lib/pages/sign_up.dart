@@ -30,8 +30,68 @@ class _SignupPageState extends State<SignupPage> {
         await http.post(apiUrl, body: {"email": email, "password": password});
 
     if (Response.statusCode == 200) {
-      final String responseString = Response.body;
-      return userModelFromJson(responseString);
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => Dialog(
+          backgroundColor: Color(0xff001a33),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+          child: Stack(
+            overflow: Overflow.visible,
+            alignment: Alignment.topCenter,
+            children: [
+              Container(
+                height: 300,
+                width: 350,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 70, 10, 10),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Success !!!',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Your creation has been successfully done! + \n + Activer your account ' +
+                            email,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage())),
+                        color: Colors.green,
+                        child: Text(
+                          'Okay',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                  top: -60,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.green,
+                    radius: 60,
+                    child: Icon(
+                      Icons.check_rounded,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      );
     } else if (Response.statusCode == 401) {
       throw Exception(showDialog<String>(
         context: context,
@@ -271,9 +331,6 @@ class _SignupPageState extends State<SignupPage> {
                                   setState(() {
                                     _user = user;
                                   });
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginPage()));
                                 } else {
                                   return;
                                 }
