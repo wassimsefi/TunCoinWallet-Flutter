@@ -27,6 +27,10 @@ class BuyPage extends StatefulWidget {
 class _BuyPageState extends State<BuyPage> {
   String id = "";
   User _user;
+  String _valueTND = "0";
+  String _devis = 'TND';
+  String _converted = '';
+
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   TextEditingController _amount = TextEditingController();
 
@@ -176,6 +180,25 @@ class _BuyPageState extends State<BuyPage> {
 
   @override
   Widget build(BuildContext context) {
+    // convertion
+    if (_valueTND == "") {
+      _converted = "0.0";
+      _valueTND = "0.0";
+    } else {
+      switch (_devis) {
+        case 'TND':
+          _converted = ((double.parse(_valueTND)) / 10).toString();
+          print("hhhhhh" + _devis);
+
+          break;
+        case 'EUR':
+          _converted = ((double.parse(_valueTND)) / 2).toString();
+          print("hhhhhh22222" + _devis);
+
+          break;
+        default:
+      }
+    }
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
@@ -532,9 +555,7 @@ class _BuyPageState extends State<BuyPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Padding(
-                                padding: EdgeInsets.symmetric(vertical: 16.0)),
-                            Padding(
-                                padding: EdgeInsets.symmetric(vertical: 8.0)),
+                                padding: EdgeInsets.symmetric(vertical: 0.0)),
                             Form(
                               key: _formkey,
                               child: Column(
@@ -552,8 +573,13 @@ class _BuyPageState extends State<BuyPage> {
                                             color: Color(0xff001a33)),
                                         filled: true,
                                         contentPadding: EdgeInsets.all(16.0),
-                                        prefixIcon: Icon(Icons.euro),
+                                        prefixIcon: Icon(Icons.title_rounded),
                                       ),
+                                      onChanged: (String str) {
+                                        setState(() {
+                                          _valueTND = str;
+                                        });
+                                      },
                                       keyboardType: TextInputType.number,
                                       validator: (String value) {
                                         if (value.isEmpty) {
@@ -569,6 +595,112 @@ class _BuyPageState extends State<BuyPage> {
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8.0)),
+                            Container(
+                                margin: EdgeInsets.only(top: 25),
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Radio(
+                                          activeColor: Colors.black,
+                                          onChanged: (v) {
+                                            setState(() {
+                                              _devis = v;
+                                            });
+                                          },
+                                          groupValue: _devis,
+                                          value: 'TND',
+                                        ),
+                                        Text(
+                                          'TND',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Radio(
+                                          activeColor: Colors.black,
+                                          onChanged: (v) {
+                                            setState(() {
+                                              _devis = v;
+                                            });
+                                          },
+                                          groupValue: _devis,
+                                          value: 'EUR',
+                                        ),
+                                        Text(
+                                          'EUR',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            Container(
+                                margin: EdgeInsets.only(top: 25),
+                                width: MediaQuery.of(context).size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: ((MediaQuery.of(context)
+                                                      .size
+                                                      .width) -
+                                                  80) /
+                                              3,
+                                          margin: EdgeInsets.only(top: 25),
+                                          child: Text(
+                                            '$_valueTND TNC',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 30,
+                                          width: ((MediaQuery.of(context)
+                                                      .size
+                                                      .width) -
+                                                  80) /
+                                              3,
+                                          child: Icon(
+                                            Icons.double_arrow_outlined,
+                                            size: 50,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 25),
+                                          width: ((MediaQuery.of(context)
+                                                      .size
+                                                      .width) -
+                                                  80) /
+                                              3,
+                                          child: Text(
+                                            '$_converted $_devis',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 50.0)),
                             Container(
                               width: MediaQuery.of(context).size.width,
                               height: 43.0,

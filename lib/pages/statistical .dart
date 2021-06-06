@@ -27,6 +27,8 @@ class _SatisticalPageState extends State<SatisticalPage> {
   String id = "";
   User _user;
 
+  List<Transaction> transactionsList = new List();
+
   Future getId() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -38,6 +40,10 @@ class _SatisticalPageState extends State<SatisticalPage> {
     final User user = await getUser(id);
     setState(() {
       _user = user;
+
+      for (var i = 0; i < _user.transaction.length; i++) {
+        transactionsList.insert(0, _user.transaction[i]);
+      }
     });
   }
 
@@ -94,7 +100,7 @@ class _SatisticalPageState extends State<SatisticalPage> {
         ),
         backgroundColor: Color(0xff001a33),
       ),
-      body: _user.transaction.length == 0
+      body: transactionsList.length == 0
           ? new FutureBuilder(
               future: getUser(id),
               builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
