@@ -495,13 +495,6 @@ class _BuyPageState extends State<BuyPage> {
                                         fontWeight: FontWeight.w700,
                                         color: Colors.grey[900]),
                                   ),
-                                  Text(
-                                    "1 TunCoin = \$ 0.1247",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.grey[500]),
-                                  ),
                                 ],
                               ),
                             ),
@@ -509,7 +502,7 @@ class _BuyPageState extends State<BuyPage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 Text(
-                                  "1 TunCoin = \$ 0.1247",
+                                  "1 TNC = \$ 0.1247",
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700,

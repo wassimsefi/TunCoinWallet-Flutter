@@ -33,10 +33,12 @@ Widget customListTile(Article article, BuildContext context) {
             height: 200.0,
             width: double.infinity,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(article.urlToImage),
-                fit: BoxFit.cover,
-              ),
+              image: article.urlToImage == null
+                  ? DecorationImage(image: AssetImage('assets/logo2.png'))
+                  : DecorationImage(
+                      image: NetworkImage(article.urlToImage),
+                      fit: BoxFit.cover,
+                    ),
               borderRadius: BorderRadius.circular(12.0),
             ),
           ),
